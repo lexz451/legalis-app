@@ -1,5 +1,5 @@
 name: legalis
-description: Legalis Flutter web project.
+description: Legalis Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.15.0 <3.0.0"
 
 dependencies:
   flutter_web_plugins:
@@ -34,6 +34,13 @@ dependencies:
   routemaster: ^0.9.5
   provider: ^6.0.1
   carousel_slider: ^4.0.0
+  flutter_breadcrumb: ^1.0.1
+  expandable: ^5.0.1
+  http: ^0.13.4
+  dio: ^4.0.4
+  localstorage: ^4.0.0+1
+  flutter_svg: ^1.0.3
+  dio_http_cache: ^0.3.0
 
 dev_dependencies:
   flutter_test:
@@ -51,7 +58,19 @@ flutter:
   uses-material-design: false
 
   assets:
-    - assets/images/logo.png
+    - assets/images/
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+        - asset: assets/fonts/Inter-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Inter-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Inter-Bold.ttf
+          weight: 700
+
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:
