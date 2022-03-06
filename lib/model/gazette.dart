@@ -2,29 +2,26 @@ import 'package:legalis/model/normative.dart';
 
 class Gazette {
   String id;
-  String name;
-  String file;
-  String type;
-  String date;
-  int number;
-  // ignore: non_constant_identifier_names
-  int download_count;
-  List<Normative> normatives;
+  String? name;
+  String? file;
+  String? type;
+  String? date;
+  num? number;
+  num? downloadCount;
+  List<Normative>? normatives;
 
   Gazette(
       {required this.id,
-      required this.name,
-      required this.file,
-      required this.type,
-      required this.date,
-      required this.number,
-      // ignore: non_constant_identifier_names
-      required this.download_count,
-      required this.normatives})
-      : super();
+      this.name,
+      this.file,
+      this.type,
+      this.date,
+      this.number,
+      this.downloadCount,
+      this.normatives});
 
   factory Gazette.fromMap(Map<String, dynamic> data) {
-    var _normatives = data['normatives'] as List<Map<String, dynamic>>;
+    final _normatives = [];
     return Gazette(
         id: data['id'],
         name: data['name'],
@@ -32,7 +29,7 @@ class Gazette {
         type: data['type'],
         date: data['date'],
         number: data['number'],
-        download_count: data['download_count'],
+        downloadCount: data['download_count'],
         normatives: _normatives.map((e) => Normative.fromMap(e)).toList());
   }
 }

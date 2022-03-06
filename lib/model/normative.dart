@@ -45,6 +45,20 @@ class Normative {
         number: data['number']);
   }
 
-  static Normative fromJsonModel(Map<String, dynamic> json) =>
-      Normative.fromMap(json);
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'text': text,
+      'gazette': gazette,
+      'keywords': keywords,
+      'tags': tags,
+      'organism': organism,
+      'state': state,
+      'summary': summary,
+      'year': year,
+      'normtype': normtype,
+      'number': number
+    };
+  }
 }

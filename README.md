@@ -1,6 +1,6 @@
-# Legalis
+# legalis
 
-Flutter multiplatform project for web and mobile Legalis app.
+A new Flutter project.
 
 ## Getting Started
 
