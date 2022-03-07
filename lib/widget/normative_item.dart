@@ -50,7 +50,9 @@ class _NormativeItemState extends State<NormativeItem> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                        color: AppTheme.accent,
+                        color: widget.normative.state == "Activa"
+                            ? AppTheme.accent
+                            : AppTheme.primary,
                         borderRadius: BorderRadius.circular(4)),
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -149,32 +151,30 @@ class _NormativeItemState extends State<NormativeItem> {
                     const SizedBox(
                       height: 4,
                     ),
-                    Row(
-                      children: [
-                        const Text(
-                          "Palabras clave:",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Wrap(
-                          spacing: 4,
-                          direction: Axis.horizontal,
-                          children: widget.normative.keywords
-                              .map((e) => Text(
-                                    e,
-                                    style: TextStyle(
-                                        color: AppTheme.primaryLight,
-                                        fontSize: 12),
-                                  ))
-                              .toList(),
-                        ),
-                      ],
-                    )
+                    const Text(
+                      "Palabras clave:",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 2,
+                    ),
+                    Wrap(
+                      spacing: 2,
+                      direction: Axis.vertical,
+                      clipBehavior: Clip.antiAlias,
+                      children: widget.normative.keywords
+                          .map((e) => Text(
+                                e,
+                                overflow: TextOverflow.ellipsis,
+                                textWidthBasis: TextWidthBasis.parent,
+                                style: TextStyle(
+                                    color: AppTheme.primaryLight, fontSize: 11),
+                              ))
+                          .toList(),
+                    ),
                   ],
                 ),
               )

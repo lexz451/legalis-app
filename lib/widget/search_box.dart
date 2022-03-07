@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SearchBox extends StatefulWidget {
-  const SearchBox({Key? key}) : super(key: key);
+  const SearchBox({Key? key, required this.onSubmit}) : super(key: key);
+
+  final Function onSubmit;
 
   @override
   State<StatefulWidget> createState() => _SearchBoxState();
@@ -12,7 +14,7 @@ class _SearchBoxState extends State<SearchBox> {
   final _controller = TextEditingController();
 
   void _onSearchSubmit(value) {
-    print(value);
+    widget.onSubmit(value);
   }
 
   @override

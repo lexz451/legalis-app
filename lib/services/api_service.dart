@@ -11,15 +11,17 @@ class APIService {
   final API_URL = "https://api-gaceta.datalis.dev/api";
   final dio = Dio();
 
+  late CacheOptions options;
+
   Future<APIService> init() async {
     final _temp = await _getTempDirectory();
     final _store = HiveCacheStore(_temp?.path);
-    final _cacheOptions = CacheOptions(
+    options = CacheOptions(
       store: _store,
       policy: CachePolicy.forceCache,
     );
     dio.options.baseUrl = API_URL;
-    dio.interceptors.add(DioCacheInterceptor(options: _cacheOptions));
+    dio.interceptors.add(DioCacheInterceptor(options: options));
     return this;
   }
 
@@ -31,9 +33,13 @@ class APIService {
     return _tmpDir;
   }
 
-  Future get(String path, {Map<String, String>? params}) async {
+  Future get(String path,
+      {Map<String, String>? params, refresh = false}) async {
     try {
-      final _res = await dio.get(path, queryParameters: params);
+      final policy = refresh ? CachePolicy.refresh : CachePolicy.forceCache;
+      final _res = await dio.get(path,
+          queryParameters: params,
+          options: options.copyWith(policy: policy).toOptions());
       return _res.data;
     } on DioError catch (e) {
       if (kDebugMode) {

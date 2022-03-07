@@ -18,6 +18,7 @@ import 'package:legalis/screens/normative_screen.dart';
 import 'package:legalis/screens/pdfviewer_screen.dart';
 import 'package:legalis/screens/popular_normatives_screen.dart';
 import 'package:legalis/screens/recent_normative_screen.dart';
+import 'package:legalis/screens/search_results_screen.dart';
 import 'package:legalis/screens/settings_screen.dart';
 import 'package:legalis/state/app_viewmodel.dart';
 import 'package:legalis/theme.dart';
@@ -53,7 +54,10 @@ final routeMap = RouteMap(routes: {
   '/dashboard/recent': (route) => const CupertinoPage(child: RecentNormative()),
   '/dashboard/popular': (route) =>
       const CupertinoPage(child: PopularNormativeScreen()),
+  '/dashboard/search-results': (route) =>
+      CupertinoPage(child: SearchResultsScreen(params: route.queryParameters)),
   '/dashboard/directories/normatives/:id': (route) => _goToNormative(route),
+  '/dashboard/search-results/normatives/:id': (route) => _goToNormative(route),
   '/dashboard/directories/normatives/:id/viewer/:file': (route) =>
       _goToViewer(route),
   //'/dashboard/normatives/:id': (route) => _goToNormative(route),

@@ -23,4 +23,9 @@ class NormativeRepository {
     var _res = await apiService.get("/normativas/$id");
     return Normative.fromMap(_res);
   }
+
+  Future<Paged<Normative>> searchNormatives(params) async {
+    var _res = await apiService.get("/search", params: params, refresh: true);
+    return Paged<Normative>.fromMap(_res, Normative.fromMap);
+  }
 }

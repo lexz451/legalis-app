@@ -28,8 +28,8 @@ class Normative {
   }) : super();
 
   factory Normative.fromMap(Map<String, dynamic> data) {
-    var _keywords = data['keywords'] as List<dynamic>;
-    var _tags = data['tags'] as List<dynamic>;
+    var _keywords = (data['keywords'] ?? []) as List<dynamic>;
+    var _tags = (data['tags'] ?? []) as List<dynamic>;
     return Normative(
         id: data['id'],
         name: data['name'],
