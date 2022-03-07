@@ -82,6 +82,7 @@ class _FiltersSelectorState extends State<FiltersSelector> {
               ),
               RadioGroup(
                 items: _mapGazetteTypes(),
+                showDefault: true,
               ),
               const Divider(
                 color: Colors.black12,
@@ -165,6 +166,7 @@ class _FiltersSelectorState extends State<FiltersSelector> {
               ),
               RadioGroup(
                 items: _mapTopics(),
+                showDefault: true,
               ),
             ],
           ),

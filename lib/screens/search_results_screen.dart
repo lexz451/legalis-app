@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:legalis/model/selectable_item.dart';
 import 'package:legalis/state/search_results_viewmodel.dart';
 import 'package:legalis/theme.dart';
 import 'package:legalis/widget/filters_selector.dart';
 import 'package:legalis/widget/normative_item.dart';
+import 'package:legalis/widget/radiogroup.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -20,6 +22,21 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
   final viewModel = SearchResultsViewModel();
 
   Map<String, dynamic> get params => widget.params;
+
+  int sortBy = 1;
+
+  setSortBy(sort) {
+    setState(() {
+      sortBy = sort;
+      var _map = {...params};
+      if (sortBy == 2) {
+        _map['sort_by_year'] = true;
+      } else {
+        _map['sort_by_year'] = null;
+      }
+      viewModel.fetchResults(_map);
+    });
+  }
 
   @override
   void initState() {
@@ -72,6 +89,54 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                             height: 8,
                           ),
                           FiltersSelector(),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            child: Row(
+                              children: [
+                                const Expanded(
+                                    child: Text("Ordernar por:",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold))),
+                                Row(
+                                  children: [
+                                    const Text(
+                                      "Mas relevantes",
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                    Radio(
+                                        visualDensity: VisualDensity.compact,
+                                        value: 1,
+                                        groupValue: sortBy,
+                                        onChanged: (value) {
+                                          setSortBy(value);
+                                        })
+                                  ],
+                                ),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                Row(
+                                  children: [
+                                    const Text(
+                                      "Mas recientes",
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                    Radio(
+                                        visualDensity: VisualDensity.compact,
+                                        value: 2,
+                                        groupValue: sortBy,
+                                        onChanged: (value) {
+                                          setSortBy(value);
+                                        })
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
                           const SizedBox(
                             height: 8,
                           ),

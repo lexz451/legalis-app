@@ -26,6 +26,7 @@ class SearchResultsViewModel extends BaseModel {
       final _res = await normativeRepository.searchNormatives(params);
       setResults(Resource.complete(_res));
     } catch (e) {
+      print(e);
       setResults(Resource.error(e.toString()));
     }
   }
