@@ -21,10 +21,8 @@ jobs:
           cache: true
           cache-key: flutter
       - run: flutter pub get
-      - run: flutter build apk
-      - uses: skx/github-action-publish-binaries@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: flutter build apk --split-per-abi
+      - uses: ncipollo/release-action@v1
         with:
-          releaseId: legalis-app
-          args: 'build/app/outputs/apk/release/app-release.apk'
+          artifacts: "build/app/outputs/apk/release/*.apk"
+          token: ${{ secrets.GITHUB_TOKEN }}
