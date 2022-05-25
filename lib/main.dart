@@ -1,54 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:get_it/get_it.dart';
-import 'package:legalis/app.dart';
-import 'package:legalis/repositories/about_repository.dart';
-import 'package:legalis/repositories/bookmarks_repository.dart';
-import 'package:legalis/repositories/directory_repository.dart';
-import 'package:legalis/repositories/gazette_repository.dart';
-import 'package:legalis/repositories/glossary_repository.dart';
-import 'package:legalis/repositories/normative_repository.dart';
-import 'package:legalis/services/api_service.dart';
-import 'package:legalis/services/localstorage_service.dart';
+import 'package:legalis/di.dart';
+import 'package:legalis/router.dart';
+import 'package:legalis/screens/app_viewmodel.dart';
+import 'package:legalis/theme.dart';
+import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
-final getIt = GetIt.instance;
+// ignore: non_constant_identifier_names
+final LOGGER = Logger();
 
-void setup() {
-  getIt.registerSingletonAsync<LocalStorageService>(
-      () async => LocalStorageService().init());
-  getIt.registerSingletonAsync<APIService>(() async => APIService().init());
-  getIt.registerSingletonAsync<DirectoryRepository>(
-      () async => DirectoryRepository(),
-      dependsOn: [APIService, LocalStorageService]);
-  getIt.registerSingletonAsync<NormativeRepository>(
-      () async => NormativeRepository(),
-      dependsOn: [APIService, LocalStorageService]);
-  getIt.registerSingletonAsync<GazetteRepository>(
-      () async => GazetteRepository(),
-      dependsOn: [APIService, LocalStorageService]);
-  getIt.registerSingletonAsync<GlossaryRepository>(
-      () async => GlossaryRepository(),
-      dependsOn: [APIService, LocalStorageService]);
-  getIt.registerSingletonAsync<AboutRepository>(() async => AboutRepository(),
-      dependsOn: [APIService, LocalStorageService]);
-  getIt.registerSingletonAsync<BookmarksRepository>(
-      () async => BookmarksRepository(),
-      dependsOn: [APIService, LocalStorageService]);
-}
-
-void main() {
-  setup();
+void main() async {
+  final binding = WidgetsFlutterBinding.ensureInitialized();
   Routemaster.setPathUrlStrategy();
-  FlutterNativeSplash.removeAfter((context) async => await getIt
-      .allReady()
-      .then((value) => Future.delayed(const Duration(milliseconds: 250))));
-  runApp(FutureBuilder(
-      future: getIt.allReady(),
-      builder: (context, state) {
-        if (state.connectionState == ConnectionState.waiting) {
-          return Container();
-        }
-        return const App();
-      }));
+  FlutterNativeSplash.preserve(widgetsBinding: binding);
+  await initDI();
+  SentryFlutter.init((config) {
+    config.dsn =
+        "https://6eca271f462c4075a6eb9858a32d59f8@o1254650.ingest.sentry.io/6422681";
+    config.tracesSampleRate = 1.0;
+  }, appRunner: () {
+    runApp(ChangeNotifierProvider<AppViewModel>(
+      create: (_) => AppViewModel()..init(),
+      child: MaterialApp.router(
+        title: "Legalis",
+        theme: AppTheme.theme,
+        routerDelegate: RoutemasterDelegate(routesBuilder: (_) => routeMap),
+        routeInformationParser: const RoutemasterParser(),
+      ),
+    ));
+    FlutterNativeSplash.remove();
+  });
 }

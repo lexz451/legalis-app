@@ -6,8 +6,10 @@ import 'package:legalis/services/api_service.dart';
 class GlossaryRepository {
   final apiService = GetIt.I<APIService>();
 
-  Future<Paged<GlossaryTerm>> fetchTerms() async {
-    final _terms = await apiService.get("/glosario");
+  Future<Paged<GlossaryTerm>> fetchTerms(String letter) async {
+    final _terms = await apiService.get("/glosario", params: {
+      'startswith': letter
+    });
     return Paged.fromMap(_terms, GlossaryTerm.fromMap);
   }
 }

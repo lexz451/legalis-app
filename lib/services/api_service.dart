@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
 import 'package:flutter/foundation.dart';
+import 'package:legalis/main.dart';
 import 'package:path_provider/path_provider.dart';
 
 class APIService {
@@ -34,18 +35,24 @@ class APIService {
   }
 
   Future get(String path,
-      {Map<String, dynamic>? params, refresh = false}) async {
+      {Map<String, dynamic>? params, refresh = true}) async {
     try {
-      final policy = refresh ? CachePolicy.refresh : CachePolicy.forceCache;
+      //inal policy = refresh ? CachePolicy.refresh : CachePolicy.forceCache;
       final _res = await dio.get(path,
           queryParameters: params,
-          options: options.copyWith(policy: policy).toOptions());
+          options: options.copyWith(policy: CachePolicy.noCache).toOptions());
       return _res.data;
     } on DioError catch (e) {
-      if (kDebugMode) {
-        print(e.requestOptions.uri.toString());
-        print(e.message);
-      }
+      LOGGER.e(e.requestOptions.uri.toString());
+      LOGGER.e(e.message);
+    }
+  }
+
+  Future download(String url, String savePath) async {
+    try {
+      return dio.download(url, savePath);
+    } on DioError catch (e) {
+      LOGGER.e(e);
     }
   }
 }

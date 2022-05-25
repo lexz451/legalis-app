@@ -22,14 +22,14 @@ class _FiltersSelectorState extends State<FiltersSelector> {
   RangeValues _rangeYearValues =
       RangeValues(1995, DateTime.now().year.toDouble());
 
-  List<SelectableItem> _mapGazetteTypes() =>
-      widget.gazetteTypes
+  List<SelectableItem> _mapGazetteTypes() => [];
+  /*widget.gazetteTypes
           ?.map((e) => SelectableItem(e.type, e.type))
           .toList() ??
-      [];
+      [];*/
 
-  List<SelectableItem> _mapTopics() =>
-      widget.topics?.map((e) => SelectableItem(e.name, e.name)).toList() ?? [];
+  List<SelectableItem> _mapTopics() => [];
+  //widget.topics?.map((e) => SelectableItem(e.name, e.name)).toList() ?? [];
 
   @override
   Widget build(BuildContext context) {

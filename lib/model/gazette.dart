@@ -21,7 +21,7 @@ class Gazette {
       this.normatives});
 
   factory Gazette.fromMap(Map<String, dynamic> data) {
-    final _normatives = [];
+    final _normatives = data['normatives'] ?? [];
     return Gazette(
         id: data['id'],
         name: data['name'],
@@ -30,6 +30,7 @@ class Gazette {
         date: data['date'],
         number: data['number'],
         downloadCount: data['download_count'],
-        normatives: _normatives.map((e) => Normative.fromMap(e)).toList());
+        normatives:
+            List<Normative>.from(_normatives.map((e) => Normative.fromMap(e))));
   }
 }

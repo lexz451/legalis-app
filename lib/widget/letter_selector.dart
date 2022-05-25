@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:legalis/theme.dart';
 
 class LetterSelector extends StatefulWidget {
-  const LetterSelector({Key? key}) : super(key: key);
+  final Function(String) onLetterChange;
+
+  const LetterSelector({
+    required this.onLetterChange,
+    Key? key}) : super(key: key);
 
   @override
   _LetterSelectorState createState() => _LetterSelectorState();
@@ -43,6 +47,7 @@ class _LetterSelectorState extends State<LetterSelector> {
   String _selected = 'A';
 
   _setLetter(e) {
+    widget.onLetterChange(e);
     setState(() {
       _selected = e;
     });

@@ -1,6 +1,5 @@
-class SelectableItem {
-  String label;
-  dynamic value;
-
-  SelectableItem(this.label, this.value);
+abstract class SelectableItem<T> {
+  String getLabel();
+  T getValue();
+  int? getCount();
 }

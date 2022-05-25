@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
+import 'package:legalis/main.dart';
 import 'package:legalis/model/gazette.dart';
 import 'package:legalis/model/gazette_type.dart';
 import 'package:legalis/model/paged.dart';
@@ -11,6 +12,13 @@ class GazetteRepository {
   Future<Paged<Gazette>> fetchAll({params}) async {
     final _res = await apiService.get("/gacetas");
     return Paged.fromMap(_res, Gazette.fromMap);
+  }
+
+  Future<Gazette?> fetchLatest() async {
+    final _res =
+        await apiService.get("/gacetas", params: {'page': 1, 'page_size': 1});
+    final _gazettes = List.from(_res['results'].map((e) => Gazette.fromMap(e)));
+    return _gazettes.isNotEmpty ? _gazettes[0] : null;
   }
 
   Future<Gazette> fetchById(id) async {

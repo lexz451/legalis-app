@@ -45,9 +45,9 @@ class _RadioGroupState extends State<RadioGroup> {
                   dense: true,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 4),
                   visualDensity: VisualDensity.compact,
-                  title: Text(e.label),
+                  //title: Text(e.label),
                   groupValue: groupValue,
-                  value: e.value,
+                  value: 0,
                   onChanged: (value) => _setGroupValue(value),
                 ))
             .toList()

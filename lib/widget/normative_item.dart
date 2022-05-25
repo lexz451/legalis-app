@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:legalis/model/normative.dart';
-import 'package:legalis/state/app_viewmodel.dart';
-import 'package:legalis/state/normative_item_viewmodel.dart';
+import 'package:legalis/screens/app_viewmodel.dart';
 import 'package:legalis/theme.dart';
 import 'package:legalis/widget/action_icon.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
+import 'package:share_plus/share_plus.dart';
 
 class NormativeItem extends StatefulWidget {
   const NormativeItem(
@@ -34,54 +34,59 @@ class _NormativeItemState extends State<NormativeItem> {
     super.initState();
   }
 
+  _share() {
+    Share.share('https://legalis.netlify.app/normativa/${normative.id}');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<AppViewModel>(
-      builder: (context, value, child) => Card(
-        elevation: 0.5,
+      builder: (context, vm, child) => Card(
+        elevation: 0,
         margin: const EdgeInsets.only(bottom: 8),
         child: Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        color: widget.normative.state == "Activa"
-                            ? AppTheme.accent
-                            : AppTheme.primary,
-                        borderRadius: BorderRadius.circular(4)),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                    child: Center(
-                      child: Text(
-                        widget.normative.state?.toUpperCase() ?? "",
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12),
+                  if (normative.state != null)
+                    Container(
+                      decoration: BoxDecoration(
+                          color: widget.normative.state == "Activa"
+                              ? AppTheme.accent
+                              : AppTheme.primary,
+                          borderRadius: BorderRadius.circular(4)),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 8),
+                      child: Center(
+                        child: Text(
+                          widget.normative.state?.toUpperCase() ?? "",
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12),
+                        ),
                       ),
                     ),
-                  ),
                   const Expanded(child: SizedBox()),
-                  value.isSaved(normative)
+                  vm.isBookmark(normative)
                       ? ActionIcon(
-                          icon: Icons.bookmark_rounded,
-                          onClick: () => value.toggleIsSaved(normative),
+                          icon: Icons.bookmark_added_rounded,
+                          onClick: () => vm.toggleBookmark(normative),
                         )
                       : ActionIcon(
-                          icon: Icons.bookmark_outline_rounded,
-                          onClick: () => value.toggleIsSaved(normative)),
+                          icon: Icons.bookmark_add_rounded,
+                          onClick: () => vm.toggleBookmark(normative)),
                   const SizedBox(
                     width: 8,
                   ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: ActionIcon(icon: Icons.share),
-                  ),
+                  ActionIcon(
+                    icon: Icons.share_rounded,
+                    onClick: () => _share,
+                  )
                 ],
               ),
               GestureDetector(
@@ -121,10 +126,11 @@ class _NormativeItemState extends State<NormativeItem> {
                         const SizedBox(
                           width: 4,
                         ),
-                        Text(
+                        Expanded(
+                            child: Text(
                           widget.normative.organism ?? "-",
                           style: const TextStyle(fontSize: 12),
-                        ),
+                        )),
                       ],
                     ),
                     const SizedBox(
@@ -163,7 +169,7 @@ class _NormativeItemState extends State<NormativeItem> {
                     ),
                     Wrap(
                       spacing: 2,
-                      direction: Axis.vertical,
+                      direction: Axis.horizontal,
                       clipBehavior: Clip.antiAlias,
                       children: widget.normative.keywords
                           .map((e) => Text(

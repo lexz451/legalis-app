@@ -1,9 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:legalis/model/normative.dart';
-import 'package:legalis/services/localstorage_service.dart';
+import 'package:legalis/services/storage_service.dart';
 
 class BookmarksRepository {
-  final localStorageService = GetIt.I<LocalStorageService>();
+  final localStorageService = GetIt.I<StorageService>();
 
   Future<List<Normative>> getBookmarks() async {
     final _bookmarks = localStorageService.getItem('bookmarks');

@@ -21,7 +21,7 @@ class _ActionIconState extends State<ActionIcon> {
       width: 30,
       height: 30,
       decoration: BoxDecoration(
-          color: AppTheme.accent.withOpacity(0.15),
+          color: AppTheme.accent.withOpacity(0.05),
           borderRadius: BorderRadius.circular(360)),
       child: InkWell(
         onTap: () => widget.onClick?.call(),
@@ -29,7 +29,7 @@ class _ActionIconState extends State<ActionIcon> {
         child: Center(
           child: Icon(
             icon,
-            size: 20,
+            size: 18,
             color: AppTheme.accent,
           ),
         ),
