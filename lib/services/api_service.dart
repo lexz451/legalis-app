@@ -37,10 +37,10 @@ class APIService {
   Future get(String path,
       {Map<String, dynamic>? params, refresh = true}) async {
     try {
-      //inal policy = refresh ? CachePolicy.refresh : CachePolicy.forceCache;
+      final policy = refresh ? CachePolicy.refresh : CachePolicy.forceCache;
       final _res = await dio.get(path,
           queryParameters: params,
-          options: options.copyWith(policy: CachePolicy.noCache).toOptions());
+          options: options.copyWith(policy: policy).toOptions());
       return _res.data;
     } on DioError catch (e) {
       LOGGER.e(e.requestOptions.uri.toString());

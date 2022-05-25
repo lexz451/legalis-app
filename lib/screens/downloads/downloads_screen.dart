@@ -22,22 +22,19 @@ class DownloadsScreen extends StatefulWidget {
 }
 
 class _DownloadsScreenState extends State<DownloadsScreen> {
-
   _getFileSize(File file, int decimals) {
+    if (!file.existsSync()) return '-';
     int bytes = file.lengthSync();
     if (bytes <= 0) return "0 B";
     const suffixes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
     var i = (log(bytes) / log(1024)).floor();
-    return ((bytes / pow(1024, i)).toStringAsFixed(decimals)) + ' ' + suffixes[i];
+    return ((bytes / pow(1024, i)).toStringAsFixed(decimals)) +
+        ' ' +
+        suffixes[i];
   }
 
   _openDocument(BuildContext context, File file) {
     Routemaster.of(context).push("/viewer/${basename(file.path)}");
-  }
-
-  _deleteDocument(BuildContext context, File file) {
-    final vm = Provider.of<AppViewModel>(context, listen: false);
-    vm.removeDownload(file);
   }
 
   @override
@@ -85,7 +82,8 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
                             final item = vm.downloads.data![index];
                             return Card(
                               elevation: 0,
-                              margin: const EdgeInsets.only(left: 0, right: 0, bottom: 8),
+                              margin: const EdgeInsets.only(
+                                  left: 0, right: 0, bottom: 8),
                               child: Padding(
                                 padding: const EdgeInsets.all(12),
                                 child: Column(
@@ -93,30 +91,50 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
                                   children: [
                                     Row(
                                       children: [
-                                        Expanded(child: Text(basename(item.path).toUpperCase(),
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: AppTheme.primary,
-                                              fontSize: 16
-                                          ),),),
-                                        ActionIcon(icon: CupertinoIcons.doc_text,
-                                          onClick: () => _openDocument(context, item),),
-                                        const SizedBox(width: 12,),
-                                        ActionIcon(icon: CupertinoIcons.trash,
-                                          onClick: () => _deleteDocument(
-                                              context,
-                                              item),)
+                                        Expanded(
+                                          child: Text(
+                                            basename(item.path).toUpperCase(),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: AppTheme.primary,
+                                                fontSize: 16),
+                                          ),
+                                        ),
+                                        ActionIcon(
+                                          icon: CupertinoIcons.doc_text,
+                                          onClick: () =>
+                                              _openDocument(context, item),
+                                        ),
+                                        const SizedBox(
+                                          width: 12,
+                                        ),
+                                        ActionIcon(
+                                            icon: CupertinoIcons.trash,
+                                            onClick: () =>
+                                                vm.removeDownload(item))
                                       ],
                                     ),
-                                    const SizedBox(height: 8,),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
                                     Text(_getFileSize(item, 1)),
-                                    const SizedBox(height: 4,),
+                                    const SizedBox(
+                                      height: 4,
+                                    ),
                                     Row(
                                       children: [
-                                        const Text("ÚLTIMO ACCESO:", style: TextStyle(fontSize: 12),),
-                                        const SizedBox(width: 4,),
-                                        Text(DateFormat("MMM dd").format(item.lastAccessedSync()),
-                                          style: const TextStyle(fontSize: 12),)
+                                        const Text(
+                                          "ÚLTIMO ACCESO:",
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        Text(
+                                          DateFormat("MMM dd")
+                                              .format(item.lastAccessedSync()),
+                                          style: const TextStyle(fontSize: 12),
+                                        )
                                       ],
                                     )
                                   ],
