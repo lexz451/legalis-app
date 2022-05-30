@@ -10,6 +10,7 @@ import 'package:legalis/widget/action_icon.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:provider/provider.dart';
 
 class NormativeScreen extends StatefulWidget {
   final String id;
@@ -31,6 +32,15 @@ class _NormativeScreenState extends State<NormativeScreen> {
 
   _share(norm) {
     Share.share('https://legalis.netlify.app/normativa/${norm.id}');
+  }
+
+  _savePdf() async {
+    viewModel.isDownloadingFile = true;
+    final appViewModel = Provider.of<AppViewModel>(context, listen: false);
+    await appViewModel.saveFile(
+        "https://api-gaceta.datalis.dev/files/${viewModel.gazette?.file}",
+        viewModel.gazette?.file);
+    viewModel.isDownloadingFile = false;
   }
 
   @override
@@ -94,7 +104,15 @@ class _NormativeScreenState extends State<NormativeScreen> {
                                             InkWell(
                                               onTap: () =>
                                                   Routemaster.of(context).push(
-                                                      "/viewer/${viewModel.gazette?.file}"),
+                                                      "/viewer/${viewModel.gazette?.file}",
+                                                      queryParameters: {
+                                                    'startpage': (viewModel
+                                                                .normative
+                                                                .data
+                                                                ?.startpage ??
+                                                            0)
+                                                        .toString(),
+                                                  }),
                                               child: Row(
                                                 children: const [
                                                   Icon(
@@ -142,7 +160,7 @@ class _NormativeScreenState extends State<NormativeScreen> {
                                                         const SizedBox(
                                                           width: 4,
                                                         ),
-                                                        Text("DESCARGADO",
+                                                        Text("DESCARGADA",
                                                             style: TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
@@ -152,12 +170,30 @@ class _NormativeScreenState extends State<NormativeScreen> {
                                                                 fontSize: 12))
                                                       ],
                                                     );
+                                                  } else if (viewModel
+                                                      .isDownloadingFile) {
+                                                    return Row(
+                                                      children: const [
+                                                        SpinKitCircle(
+                                                          size: 20,
+                                                          color: Colors.white70,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 4,
+                                                        ),
+                                                        Text("DESCARGANDO",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .white70,
+                                                                fontSize: 12))
+                                                      ],
+                                                    );
                                                   }
                                                   return GestureDetector(
-                                                    onTap: () => value.saveFile(
-                                                        "https://api-gaceta.datalis.dev/files/${viewModel.gazette?.file}",
-                                                        viewModel
-                                                            .gazette?.file),
+                                                    onTap: () => _savePdf(),
                                                     child: Row(
                                                       children: const [
                                                         Icon(

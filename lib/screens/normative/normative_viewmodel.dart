@@ -19,6 +19,13 @@ class NormativeViewModel extends BaseModel {
 
   Gazette? _gazette;
   Resource<Normative> _norm = Resource.loading();
+  bool _isDownloadingFile = false;
+
+  bool get isDownloadingFile => _isDownloadingFile;
+  set isDownloadingFile(bool isDownloading) {
+    _isDownloadingFile = isDownloading;
+    notifyListeners();
+  }
 
   Gazette? get gazette => _gazette;
   set gazette(Gazette? gazette) {

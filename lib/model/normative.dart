@@ -11,21 +11,25 @@ class Normative {
   String? normtype;
   int? year;
   int? number;
+  int? startpage;
+  int? endpage;
 
-  Normative({
-    required this.id,
-    required this.name,
-    this.text,
-    this.summary,
-    this.year,
-    this.normtype,
-    this.number,
-    this.tags = const [],
-    this.keywords = const [],
-    this.gazette,
-    this.organism,
-    this.state,
-  }) : super();
+  Normative(
+      {required this.id,
+      required this.name,
+      this.text,
+      this.summary,
+      this.year,
+      this.normtype,
+      this.number,
+      this.tags = const [],
+      this.keywords = const [],
+      this.gazette,
+      this.organism,
+      this.state,
+      this.startpage,
+      this.endpage})
+      : super();
 
   factory Normative.fromMap(Map<String, dynamic> data) {
     var _keywords = (data['keywords'] ?? []) as List<dynamic>;
@@ -42,7 +46,9 @@ class Normative {
         summary: data['summary'],
         year: data['year'],
         normtype: data['normtype'],
-        number: data['number']);
+        number: data['number'],
+        startpage: data['startpage'],
+        endpage: data['endpage']);
   }
 
   Map<String, dynamic> toMap() {
@@ -58,7 +64,9 @@ class Normative {
       'summary': summary,
       'year': year,
       'normtype': normtype,
-      'number': number
+      'number': number,
+      'startpage': startpage,
+      'endpage': endpage
     };
   }
 }

@@ -62,7 +62,7 @@ class AppViewModel extends BaseModel {
     return await downloadRepository.isDownloaded(fileName);
   }
 
-  saveFile(url, fileName) async {
+  Future saveFile(url, fileName) async {
     await downloadRepository.downloadFile(url, fileName);
     fetchDownloads();
     notifyListeners();

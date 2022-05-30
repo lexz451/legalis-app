@@ -35,7 +35,7 @@ class APIService {
   }
 
   Future get(String path,
-      {Map<String, dynamic>? params, refresh = true}) async {
+      {Map<String, dynamic>? params, refresh = false}) async {
     try {
       final policy = refresh ? CachePolicy.refresh : CachePolicy.forceCache;
       final _res = await dio.get(path,

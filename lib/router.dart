@@ -27,10 +27,12 @@ _goToNormative(route) {
 
 _goToViewer(RouteData route) {
   final _file = route.pathParameters['file'];
+  final _startpage = route.queryParameters['startpage'];
   return _file != null
       ? CupertinoPage(
           child: PdfViewerScreen(
           file: _file,
+          startpage: int.parse(_startpage ?? '0'),
         ))
       : const Redirect("/dashboard");
 }
