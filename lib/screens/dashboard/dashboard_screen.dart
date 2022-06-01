@@ -204,6 +204,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               children: [
                                 Image.network(
                                   "https://api.eltoque.com${item['feature_image']['url']}",
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      const SizedBox(),
                                   fit: BoxFit.cover,
                                   width: MediaQuery.of(context).size.width,
                                   height: MediaQuery.of(context).size.height,

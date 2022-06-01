@@ -48,20 +48,25 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
               CustomScrollView(
                 physics: const BouncingScrollPhysics(),
                 slivers: [
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: const [
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Text(
-                            "DESCARGAS",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                        ],
+                  SliverSafeArea(
+                    sliver: SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          children: const [
+                            SizedBox(
+                              height: 16,
+                            ),
+                            Text(
+                              "DESCARGAS",
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -71,6 +76,28 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
                         return SliverFillRemaining(
                           child: Center(
                             child: Text(vm.downloads.exception ?? "Error"),
+                          ),
+                        );
+                      }
+                      if (vm.downloads.data!.isEmpty) {
+                        return SliverFillRemaining(
+                          child: Center(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: const [
+                                Icon(
+                                  CupertinoIcons.info_circle,
+                                  size: 16,
+                                ),
+                                SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  "No existen documentos descargados",
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       }

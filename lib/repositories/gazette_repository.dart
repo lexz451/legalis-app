@@ -10,7 +10,7 @@ class GazetteRepository {
   final apiService = GetIt.I<APIService>();
 
   Future<Paged<Gazette>> fetchAll({params}) async {
-    final _res = await apiService.get("/gacetas");
+    final _res = await apiService.get("/gacetas", params: params);
     return Paged.fromMap(_res, Gazette.fromMap);
   }
 

@@ -57,7 +57,7 @@ class GazettesViewModel extends BaseModel {
     normativeTopics = _topics.sublist(0, 10);
     gazetteTypes = _types;
     filtersLoading = false;
-    loadGazettes();
+    loadGazettes(params: {'page_size': 5});
   }
 
   loadGazettes({params = const {}}) async {

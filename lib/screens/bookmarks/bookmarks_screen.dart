@@ -27,38 +27,55 @@ class _BookmarksState extends State<Bookmarks> {
               CustomScrollView(
                 physics: const BouncingScrollPhysics(),
                 slivers: [
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: const [
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Text(
-                            "FAVORITOS",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                        ],
+                  SliverSafeArea(
+                    sliver: SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          children: const [
+                            SizedBox(
+                              height: 16,
+                            ),
+                            Text(
+                              "FAVORITOS",
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                   Builder(
                     builder: (context) {
-                      if (value.bookmarks.state == ResourceState.loading) {
-                        return const SliverFillRemaining(
-                          child: Center(
-                              child: SizedBox(
-                            height: 24,
-                            width: 24,
-                            child: CircularProgressIndicator(strokeWidth: 4.0),
-                          )),
-                        );
-                      } else if (value.bookmarks.state == ResourceState.error) {
+                      if (value.bookmarks.state == ResourceState.error) {
                         return SliverFillRemaining(
                           child: Center(
                             child: Text(value.bookmarks.exception ?? "Error"),
+                          ),
+                        );
+                      } else if (value.bookmarks.data!.isEmpty) {
+                        return SliverFillRemaining(
+                          child: Center(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: const [
+                                Icon(
+                                  CupertinoIcons.info_circle,
+                                  size: 16,
+                                ),
+                                SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  "No se ha agregado ningún favorito",
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       }

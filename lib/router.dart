@@ -6,6 +6,7 @@ import 'package:legalis/screens/advanced-search/advanced_search_screen.dart';
 import 'package:legalis/screens/bookmarks/bookmarks_screen.dart';
 import 'package:legalis/screens/dashboard/dashboard_screen.dart';
 import 'package:legalis/screens/downloads/downloads_screen.dart';
+import 'package:legalis/screens/gazette-detail/gazette_screen.dart';
 import 'package:legalis/screens/gazette/gazettes_screen.dart';
 import 'package:legalis/screens/glossary/glossary_screen.dart';
 import 'package:legalis/screens/help/help_screen.dart';
@@ -22,6 +23,13 @@ _goToNormative(route) {
   final _id = route.pathParameters['id'];
   return _id != null
       ? CupertinoPage(child: NormativeScreen(id: _id))
+      : const Redirect("/dashboard");
+}
+
+_goToGazette(RouteData route) {
+  final _id = route.pathParameters['id'];
+  return _id != null
+      ? CupertinoPage(child: GazetteScreen(id: _id))
       : const Redirect("/dashboard");
 }
 
@@ -67,6 +75,7 @@ final routeMap = RouteMap(routes: {
 
   //'/dashboard/normatives/:id': (route) => _goToNormative(route),
   '/normative/:id': (route) => _goToNormative(route),
+  '/gazette/:id': (route) => _goToGazette(route),
   '/viewer/:file': (route) => _goToViewer(route),
 
   '/bookmarks/normatives/:id': (route) => _goToNormative(route),

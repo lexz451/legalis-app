@@ -7,6 +7,7 @@ import 'package:legalis/theme.dart';
 import 'package:legalis/widget/letter_selector.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
+import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
 class GlossaryScreen extends StatefulWidget {
   const GlossaryScreen({Key? key}) : super(key: key);
@@ -18,10 +19,23 @@ class GlossaryScreen extends StatefulWidget {
 class _GlossaryScreenState extends State<GlossaryScreen> {
   final viewModel = GlossaryViewModel();
 
+  final _controller = GroupedItemScrollController();
+
   @override
   void initState() {
     super.initState();
     viewModel.loadTerms();
+  }
+
+  _scrollTo(String e) {
+    try {
+      final el = viewModel.terms.data?.results
+          .firstWhere((element) => element.term.substring(0, 1) == e);
+      if (el != null) {
+        final index = viewModel.terms.data!.results.indexOf(el);
+        _controller.jumpTo(index: index);
+      }
+    } catch (e) {}
   }
 
   @override
@@ -51,26 +65,24 @@ class _GlossaryScreenState extends State<GlossaryScreen> {
                         CustomScrollView(
                           physics: const BouncingScrollPhysics(),
                           slivers: [
-                            SliverToBoxAdapter(
-                              child: Column(
-                                children: [
-                                  const SizedBox(
-                                    height: 72,
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16, vertical: 8),
-                                    child: LetterSelector(
-                                      onLetterChange: (e) => viewModel.loadTerms(letter: e)
+                            SliverSafeArea(
+                              sliver: SliverToBoxAdapter(
+                                child: Column(
+                                  children: [
+                                    const SizedBox(
+                                      height: 8,
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 12,
-                                  )
-                                ],
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 4),
+                                      child: LetterSelector(
+                                          onLetterChange: (e) => _scrollTo(e)),
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             Builder(builder: (context) {
@@ -78,36 +90,97 @@ class _GlossaryScreenState extends State<GlossaryScreen> {
                                   ResourceState.error) {
                                 return SliverFillRemaining(
                                   child: Center(
-                                    child:
-                                    Text(viewModel.terms.exception ?? "Error"),
+                                    child: Text(
+                                        viewModel.terms.exception ?? "Error"),
                                   ),
                                 );
                               }
                               final terms = viewModel.terms.data?.results ?? [];
+                              return SliverFillRemaining(
+                                child: StickyGroupedListView<dynamic, String>(
+                                  physics: const BouncingScrollPhysics(),
+                                  shrinkWrap: true,
+                                  elements: terms,
+                                  itemScrollController: _controller,
+                                  groupBy: (element) =>
+                                      element.term.substring(0, 1),
+                                  groupSeparatorBuilder:
+                                      (dynamic groupByValue) => Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    padding: const EdgeInsets.only(
+                                        top: 4, bottom: 4, left: 8),
+                                    decoration: BoxDecoration(
+                                        color:
+                                            AppTheme.primary.withOpacity(.10),
+                                        borderRadius: BorderRadius.circular(2)),
+                                    height: 24,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          groupByValue.term.substring(0, 1),
+                                          style: const TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  itemBuilder: (context, dynamic element) =>
+                                      Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          element.term.toUpperCase(),
+                                          style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        const SizedBox(
+                                          height: 8,
+                                        ),
+                                        Text(element.description ?? "-")
+                                      ],
+                                    ),
+                                  ),
+                                  itemComparator: (item1, item2) =>
+                                      item1.id.compareTo(item2.id), // optional
+                                  //useStickyGroupSeparators: true, // optional
+                                  floatingHeader: false, // optional
+                                  order: StickyGroupedListOrder.ASC, // optional
+                                ),
+                              );
+
                               return SliverList(
-                                  delegate:
-                                  SliverChildBuilderDelegate((context, index) {
-                                    final item = terms[index];
-                                    return Padding(
-                                      padding: const EdgeInsets.all(16),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            item.term.toUpperCase(),
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: AppTheme.primary),
-                                          ),
-                                          const SizedBox(
-                                            height: 8,
-                                          ),
-                                          Text(item.description ?? "-")
-                                        ],
+                                  delegate: SliverChildBuilderDelegate(
+                                      (context, index) {
+                                final item = terms[index];
+                                return Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        item.term.toUpperCase(),
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: AppTheme.primary),
                                       ),
-                                    );
-                                  }, childCount: terms.length));
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text(item.description ?? "-")
+                                    ],
+                                  ),
+                                );
+                              }, childCount: terms.length));
                             })
                           ],
                         ),

@@ -2,11 +2,13 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:legalis/model/resource.dart';
 import 'package:legalis/screens/gazette/gazettes_viewmodel.dart';
 import 'package:legalis/theme.dart';
 import 'package:legalis/widget/filters_selector.dart';
 import 'package:legalis/widget/gazette_item.dart';
+import 'package:legalis/widget/search_filters.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -36,7 +38,7 @@ class _GazettesScreenState extends State<GazettesScreen> {
                   backgroundColor: AppTheme.backgroundColor,
                   navigationBar: CupertinoNavigationBar(
                     border: null,
-                    backgroundColor: AppTheme.backgroundColor.withOpacity(.75),
+                    backgroundColor: AppTheme.backgroundColor.withOpacity(.25),
                     leading: InkWell(
                       onTap: () {
                         Routemaster.of(context).pop();
@@ -49,86 +51,60 @@ class _GazettesScreenState extends State<GazettesScreen> {
                       ),
                     ),
                   ),
-                  child: CustomScrollView(
-                    slivers: [
-                      SliverPadding(
-                        padding: const EdgeInsets.all(8),
-                        sliver: SliverToBoxAdapter(
-                          child: Column(
-                            children: [
-                              const SizedBox(
-                                height: 80,
-                              ),
-                              Text(
-                                "Indice de Gaceta",
-                                style: TextStyle(
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppTheme.primary),
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                            ],
+                  child: Stack(
+                    children: [
+                      CustomScrollView(
+                        slivers: [
+                          SliverSafeArea(
+                            sliver: Builder(builder: (context) {
+                              return SliverPadding(
+                                padding: const EdgeInsets.all(16),
+                                sliver: SliverToBoxAdapter(
+                                  child:
+                                      SearchFilters(onSubmit: (params) => {}),
+                                ),
+                              );
+                            }),
                           ),
-                        ),
+                          Builder(builder: (context) {
+                            if (viewModel.gazettes.state ==
+                                ResourceState.error) {
+                              return SliverFillRemaining(
+                                child: Center(
+                                    child: Text(viewModel.gazettes.exception ??
+                                        "Error")),
+                              );
+                            }
+                            final _gazettes =
+                                viewModel.gazettes.data?.results ?? [];
+                            return SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                    (context, index) {
+                              final item = _gazettes[index];
+                              return GazetteItem(
+                                gazette: item,
+                              );
+                            }, childCount: _gazettes.length));
+                          })
+                        ],
                       ),
-                      Builder(builder: (context) {
-                        if (viewModel.filtersLoading) {
-                          return const SliverFillRemaining(
-                            child: Center(
-                              child: SizedBox(
-                                height: 24,
-                                width: 24,
-                                child:
-                                    CircularProgressIndicator(strokeWidth: 4.0),
+                      if (viewModel.gazettes.state == ResourceState.loading)
+                        Positioned(
+                            top: 0,
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: AppTheme.primary.withOpacity(0.1),
                               ),
-                            ),
-                          );
-                        }
-                        return SliverList(
-                            delegate: SliverChildListDelegate([
-                          FiltersSelector(
-                            gazetteTypes: viewModel.gazetteTypes,
-                            topics: viewModel.normativeTopics,
-                          ),
-                          const SizedBox(
-                            height: 18,
-                          )
-                        ]));
-                      }),
-                      if (!viewModel.filtersLoading)
-                        Builder(builder: (context) {
-                          if (viewModel.gazettes.state ==
-                              ResourceState.loading) {
-                            return const SliverFillRemaining(
                               child: Center(
-                                  child: SizedBox(
-                                height: 24,
-                                width: 24,
-                                child:
-                                    CircularProgressIndicator(strokeWidth: 4.0),
-                              )),
-                            );
-                          } else if (viewModel.gazettes.state ==
-                              ResourceState.error) {
-                            return SliverFillRemaining(
-                              child: Center(
-                                  child: Text(
-                                      viewModel.gazettes.exception ?? "Error")),
-                            );
-                          }
-                          final _gazettes =
-                              viewModel.gazettes.data?.results ?? [];
-                          return SliverList(
-                              delegate:
-                                  SliverChildBuilderDelegate((context, index) {
-                            final item = _gazettes[index];
-                            return GazetteItem(
-                              gazette: item,
-                            );
-                          }, childCount: _gazettes.length));
-                        })
+                                child: SpinKitPulse(
+                                  size: 24,
+                                  color: AppTheme.accent,
+                                ),
+                              ),
+                            ))
                     ],
                   ),
                 ),

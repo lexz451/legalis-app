@@ -22,7 +22,7 @@ class GlossaryViewModel extends BaseModel {
   loadTerms({String letter = 'A'}) async {
     terms = Resource.loading(data: _terms.data);
     try {
-      final _terms = await glossaryRepository.fetchTerms(letter);
+      final _terms = await glossaryRepository.fetchTerms();
       terms = Resource.complete(_terms);
     } catch (e) {
       terms = Resource.error(e.toString(), data: _terms.data);
