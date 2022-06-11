@@ -7,7 +7,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:legalis/model/resource.dart';
 import 'package:legalis/screens/app_viewmodel.dart';
-import 'package:legalis/screens/downloads/downloads_viewmodel.dart';
 import 'package:legalis/theme.dart';
 import 'package:legalis/widget/action_icon.dart';
 import 'package:path/path.dart';
@@ -79,7 +78,8 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
                           ),
                         );
                       }
-                      if (vm.downloads.data!.isEmpty) {
+                      if (vm.downloads.data == null ||
+                          vm.downloads.data!.isEmpty) {
                         return SliverFillRemaining(
                           child: Center(
                             child: Column(

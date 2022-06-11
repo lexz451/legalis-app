@@ -21,7 +21,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     'directories': 'Directorio Temático',
     'gazettes': 'Indice de Gacetas',
     'recent': 'Normativa Reciente',
-    'popular': 'Normas populares',
+    'popular': 'Normas más consultadas',
   };
 
   @override

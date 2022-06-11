@@ -43,6 +43,19 @@ class DownloadRepository {
     return _contents.toList();
   }
 
+  Future<File?> getDownloadedFile(fileName) async {
+    if (fileName == null) return null;
+    bool _hasPermission = await _requestPermission();
+    if (!_hasPermission) {
+      LOGGER.e("Missing storage permission");
+      return null;
+    }
+    final _dir = await getApplicationDocumentsDirectory();
+    final _files = _dir.listSync().whereType<File>().toList();
+    if (_files.isEmpty) return null;
+    return _files.firstWhere((e) => e.path.endsWith(fileName));
+  }
+
   Future downloadFile(String url, String fileName) async {
     bool _hasPermission = await _requestPermission();
     if (!_hasPermission) {

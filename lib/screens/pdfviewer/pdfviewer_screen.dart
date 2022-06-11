@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:legalis/di.dart';
+import 'package:legalis/main.dart';
+import 'package:legalis/repositories/download_repository.dart';
 import 'package:legalis/services/api_service.dart';
 import 'package:legalis/theme.dart';
 import 'package:routemaster/routemaster.dart';
@@ -19,14 +23,17 @@ class PdfViewerScreen extends StatefulWidget {
 
 class _PdfViewerScreenState extends State<PdfViewerScreen> {
   final apiService = getIt<APIService>();
+  final downloadRepository = getIt<DownloadRepository>();
 
-  String get file => widget.file;
+  String get fileId => widget.file;
+  String get fileUrl => "https://api-gaceta.datalis.dev/files/$fileId";
+  Future<File?> get file => downloadRepository.getDownloadedFile(fileId);
+
   final PdfViewerController _controller = PdfViewerController();
 
   @override
   void initState() {
     super.initState();
-    _controller.jumpToPage(widget.startpage);
   }
 
   @override
@@ -50,11 +57,30 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
             ),
           ),
           child: SafeArea(
-            child: SfPdfViewer.network(
-              "https://api-gaceta.datalis.dev/files/$file",
-              controller: _controller,
-            ),
-          )),
+              child: FutureBuilder<File?>(
+            future: file,
+            builder: (context, snapshot) {
+              LOGGER.d("Loading pdf file");
+              if (snapshot.hasData) {
+                final _file = snapshot.data;
+                if (_file != null) {
+                  LOGGER.d("Pdf file loaded from downloads");
+                  return SfPdfViewer.file(
+                    _file,
+                    controller: _controller,
+                  );
+                } else {
+                  LOGGER.d(
+                      "Pdf file not found in downloads, fetching from network");
+                  return SfPdfViewer.network(
+                    fileUrl,
+                    controller: _controller,
+                  );
+                }
+              }
+              return const SizedBox();
+            },
+          ))),
     );
   }
 }
