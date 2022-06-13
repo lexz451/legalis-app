@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:legalis/widget/action_icon.dart';
 
 class InfiniteListView extends StatefulWidget {
@@ -35,6 +34,7 @@ class _InfiniteListViewState extends State<InfiniteListView> {
     return Column(
       children: [
         ListView.builder(
+          primary: false,
           shrinkWrap: true,
           itemCount: items.length,
           itemBuilder: (context, index) {

@@ -22,9 +22,9 @@ class RecentNormativeViewModel extends BaseModel {
   fetchLatestGazette() async {
     setGazette(Resource.loading(data: _gazette.data));
     try {
-      final _gazette = await gazetteRepository.fetchLatest();
-      setGazette(Resource.complete(_gazette));
-      LOGGER.d(_gazette?.normatives);
+      final gazette = await gazetteRepository.fetchLatest();
+      setGazette(Resource.complete(gazette));
+      LOGGER.d(gazette?.normatives);
     } catch (e) {
       LOGGER.e(e);
       setGazette(Resource.error(e.toString(), data: _gazette.data));

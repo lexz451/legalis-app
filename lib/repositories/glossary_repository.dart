@@ -7,7 +7,7 @@ class GlossaryRepository {
   final apiService = GetIt.I<APIService>();
 
   Future<Paged<GlossaryTerm>> fetchTerms() async {
-    final _terms = await apiService.get("/glosario", params: {});
-    return Paged.fromMap(_terms, GlossaryTerm.fromMap);
+    final terms = await apiService.get("/glosario", params: {});
+    return Paged.fromMap(terms, GlossaryTerm.fromMap);
   }
 }

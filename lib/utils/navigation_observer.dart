@@ -8,10 +8,4 @@ class NavigationObserver extends NavigatorObserver {
     super.didPush(route, previousRoute);
     routeStack.add(route);
   }
-
-  @override
-  void didPop(Route route, Route? previousRoute) {
-    // TODO: implement didPop
-    super.didPop(route, previousRoute);
-  }
 }

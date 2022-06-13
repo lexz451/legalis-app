@@ -9,6 +9,7 @@ class ActionIcon extends StatefulWidget {
   final Function? onClick;
 
   @override
+  // ignore: library_private_types_in_public_api
   _ActionIconState createState() => _ActionIconState();
 }
 

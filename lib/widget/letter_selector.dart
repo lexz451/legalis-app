@@ -1,15 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:legalis/theme.dart';
 
 class LetterSelector extends StatefulWidget {
   final Function(String) onLetterChange;
 
-  const LetterSelector({
-    required this.onLetterChange,
-    Key? key}) : super(key: key);
+  const LetterSelector({required this.onLetterChange, Key? key})
+      : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _LetterSelectorState createState() => _LetterSelectorState();
 }
 

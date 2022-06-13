@@ -168,14 +168,6 @@ class _DirectoriesState extends State<Directories> {
                                                       margin:
                                                           const EdgeInsets.only(
                                                               right: 8),
-                                                      child: Center(
-                                                          child: Text(
-                                                        e.name!,
-                                                        style: TextStyle(
-                                                            fontSize: 12,
-                                                            color: AppTheme
-                                                                .accent),
-                                                      )),
                                                       padding: const EdgeInsets
                                                               .symmetric(
                                                           horizontal: 16),
@@ -186,6 +178,14 @@ class _DirectoriesState extends State<Directories> {
                                                               BorderRadius
                                                                   .circular(
                                                                       360)),
+                                                      child: Center(
+                                                          child: Text(
+                                                        e.name!,
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            color: AppTheme
+                                                                .accent),
+                                                      )),
                                                     ),
                                                   ))
                                               .toList(),

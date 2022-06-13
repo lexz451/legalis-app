@@ -6,7 +6,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:legalis/model/resource.dart';
 import 'package:legalis/screens/gazette/gazettes_viewmodel.dart';
 import 'package:legalis/theme.dart';
-import 'package:legalis/widget/filters_selector.dart';
 import 'package:legalis/widget/gazette_item.dart';
 import 'package:legalis/widget/search_filters.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +15,7 @@ class GazettesScreen extends StatefulWidget {
   const GazettesScreen({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _GazettesScreenState createState() => _GazettesScreenState();
 }
 
@@ -60,8 +60,13 @@ class _GazettesScreenState extends State<GazettesScreen> {
                               return SliverPadding(
                                 padding: const EdgeInsets.all(16),
                                 sliver: SliverToBoxAdapter(
-                                  child:
-                                      SearchFilters(onSubmit: (params) => {}),
+                                  child: SearchFilters(
+                                    onSubmit: (params) => {},
+                                    params: const {},
+                                    showGazetteTypeFilter: true,
+                                    showNormativeStateFilter: false,
+                                    showTextFilter: false,
+                                  ),
                                 ),
                               );
                             }),
@@ -75,16 +80,16 @@ class _GazettesScreenState extends State<GazettesScreen> {
                                         "Error")),
                               );
                             }
-                            final _gazettes =
+                            final gazettes =
                                 viewModel.gazettes.data?.results ?? [];
                             return SliverList(
                                 delegate: SliverChildBuilderDelegate(
                                     (context, index) {
-                              final item = _gazettes[index];
+                              final item = gazettes[index];
                               return GazetteItem(
                                 gazette: item,
                               );
-                            }, childCount: _gazettes.length));
+                            }, childCount: gazettes.length));
                           })
                         ],
                       ),

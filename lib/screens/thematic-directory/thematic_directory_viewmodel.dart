@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:legalis/model/directory.dart';
 import 'package:legalis/model/normative.dart';
@@ -51,8 +50,7 @@ class DirectoriesViewModel extends BaseModel {
     currentDirectory = dir;
     if (isChild) {
       if (breadcrumb.contains(dir)) {
-        final _breadcrumb = breadcrumb.sublist(0, breadcrumb.indexOf(dir));
-        breadcrumb = _breadcrumb;
+        breadcrumb = breadcrumb.sublist(0, breadcrumb.indexOf(dir));
       } else {
         breadcrumb.add(dir);
       }
@@ -65,9 +63,8 @@ class DirectoriesViewModel extends BaseModel {
   fetchNormatives(Directory? directory, {int page = 1}) async {
     normatives = Resource.loading();
     try {
-      final _norms =
-          await normativeRepository.fetchByDirectoryId(directory?.id);
-      normatives = Resource.complete(_norms);
+      final norms = await normativeRepository.fetchByDirectoryId(directory?.id);
+      normatives = Resource.complete(norms);
     } catch (e) {
       normatives = Resource.error(e.toString());
     }
@@ -76,11 +73,11 @@ class DirectoriesViewModel extends BaseModel {
   loadDirectories() async {
     directories = Resource.loading(data: _directories.data);
     try {
-      final _directories = await directoryRepository.fetchAll();
+      final dirs = await directoryRepository.fetchAll();
       directories =
-          Resource.complete(_directories.where((e) => e.icon != null).toList());
-      final _default = directories.data?.first;
-      setCurrentDirectory(_default!);
+          Resource.complete(dirs.where((e) => e.icon != null).toList());
+      final def = directories.data?.first;
+      setCurrentDirectory(def!);
     } catch (e) {
       if (kDebugMode) {
         print(e);

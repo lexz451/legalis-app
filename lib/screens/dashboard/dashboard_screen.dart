@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:legalis/screens/dashboard/dashboard_viewmodel.dart';
 import 'package:legalis/theme.dart';
@@ -188,13 +187,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 Consumer<DashboardViewModel>(
                   builder: (context, value, child) {
-                    final _news = viewModel.news;
+                    final news = viewModel.news;
                     return SliverPadding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       sliver: SliverList(
                           delegate:
                               SliverChildBuilderDelegate((context, index) {
-                        final item = _news[index];
+                        final item = news[index];
                         return SizedBox(
                           height: 250,
                           child: Card(
@@ -229,7 +228,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                           ),
                         );
-                      }, childCount: _news.length)),
+                      }, childCount: news.length)),
                     );
                   },
                 )

@@ -20,27 +20,27 @@ import 'package:legalis/screens/thematic-directory/thematic_directory_screen.dar
 import 'package:routemaster/routemaster.dart';
 
 _goToNormative(route) {
-  final _id = route.pathParameters['id'];
-  return _id != null
-      ? CupertinoPage(child: NormativeScreen(id: _id))
+  final id = route.pathParameters['id'];
+  return id != null
+      ? CupertinoPage(child: NormativeScreen(id: id))
       : const Redirect("/dashboard");
 }
 
 _goToGazette(RouteData route) {
-  final _id = route.pathParameters['id'];
-  return _id != null
-      ? CupertinoPage(child: GazetteScreen(id: _id))
+  final id = route.pathParameters['id'];
+  return id != null
+      ? CupertinoPage(child: GazetteScreen(id: id))
       : const Redirect("/dashboard");
 }
 
 _goToViewer(RouteData route) {
-  final _file = route.pathParameters['file'];
-  final _startpage = route.queryParameters['startpage'];
-  return _file != null
+  final file = route.pathParameters['file'];
+  final startpage = route.queryParameters['startpage'];
+  return file != null
       ? CupertinoPage(
           child: PdfViewerScreen(
-          file: _file,
-          startpage: int.parse(_startpage ?? '0'),
+          file: file,
+          startpage: int.parse(startpage ?? '0'),
         ))
       : const Redirect("/dashboard");
 }
@@ -51,34 +51,37 @@ final routeMap = RouteMap(routes: {
       paths: ['/dashboard', '/bookmarks', '/downloads', '/settings']),
 
   '/dashboard': (route) => const MaterialPage(child: DashboardScreen()),
-
   '/dashboard/gazettes': (route) =>
       const CupertinoPage(child: GazettesScreen()),
   '/dashboard/directories': (route) =>
       const CupertinoPage(child: Directories()),
-
   '/dashboard/recent': (route) => const CupertinoPage(child: RecentNormative()),
-
   '/dashboard/popular': (route) =>
       const CupertinoPage(child: PopularNormativeScreen()),
   '/dashboard/advanced-search': (router) =>
       const CupertinoPage(child: AdvancedSearchScreen()),
-  '/dashboard/search-results': (route) =>
+
+  '/dashboard/advanced-search/search-results': (route) =>
+      CupertinoPage(child: SearchResultsScreen(params: route.queryParameters)),
+  '/dashboard/advanced-search/search-results/normative/:id': (route) =>
+      _goToNormative(route),
+  '/dashboard/advanced-search/search-results/normative/:id/viewer/:file':
+      (route) => _goToViewer(route),
+
+  '/dashboard/directories/normative/:id': (route) => _goToNormative(route),
+  '/dashboard/directories/normative/:id/viewer/:file': (route) =>
+      _goToViewer(route),
+
+  '/dashboard/normative/:id': (route) => _goToNormative(route),
+
+  '/search-results': (route) =>
       CupertinoPage(child: SearchResultsScreen(params: route.queryParameters)),
 
-  '/dashboard/directories/normatives/:id': (route) => _goToNormative(route),
-  '/dashboard/search-results/normatives/:id': (route) => _goToNormative(route),
-  '/dashboard/search-results/normatives/:id/viewer/:file': (route) =>
-      _goToViewer(route),
-  '/dashboard/directories/normatives/:id/viewer/:file': (route) =>
-      _goToViewer(route),
-
-  //'/dashboard/normatives/:id': (route) => _goToNormative(route),
   '/normative/:id': (route) => _goToNormative(route),
   '/gazette/:id': (route) => _goToGazette(route),
   '/viewer/:file': (route) => _goToViewer(route),
 
-  '/bookmarks/normatives/:id': (route) => _goToNormative(route),
+  //'/bookmarks/normatives/:id': (route) => _goToNormative(route),
   '/bookmarks': (route) => const MaterialPage(child: Bookmarks()),
   '/downloads': (route) => const MaterialPage(child: DownloadsScreen()),
   '/settings': (route) => const MaterialPage(child: SettingsScreen()),

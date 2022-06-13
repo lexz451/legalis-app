@@ -6,8 +6,8 @@ class AboutRepository {
   final apiService = GetIt.I<APIService>();
 
   Future<List<Person>> fetchTeam() async {
-    final _res = await apiService.get('/quienessomos');
-    return List.from(_res['results'] ?? [])
+    final res = await apiService.get('/quienessomos');
+    return List.from(res['results'] ?? [])
         .map((e) => Person.fromMap(e))
         .toList();
   }

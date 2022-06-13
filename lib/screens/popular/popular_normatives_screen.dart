@@ -7,11 +7,12 @@ class PopularNormativeScreen extends StatefulWidget {
   const PopularNormativeScreen({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _PopularNormativeScreenState createState() => _PopularNormativeScreenState();
 }
 
 class _PopularNormativeScreenState extends State<PopularNormativeScreen> {
-  static List<Normative> _normatives = [
+  static final List<Normative> _normatives = [
     Normative(
       id: "b23fa0a01005c7230b8ef68b91197d41cb6896f5",
       name: "Nombramiento de Manuel Pozo Nuñez como Embajador",
@@ -54,7 +55,7 @@ class _PopularNormativeScreenState extends State<PopularNormativeScreen> {
   ];
 
   Future<List<Normative>> _popularNormatives() async {
-    return Future.delayed(Duration(milliseconds: 500), () => _normatives);
+    return Future.delayed(const Duration(milliseconds: 500), () => _normatives);
   }
 
   @override
@@ -63,12 +64,12 @@ class _PopularNormativeScreenState extends State<PopularNormativeScreen> {
       navigationBar: CupertinoNavigationBar(
         leading: GestureDetector(
           onTap: () => Routemaster.of(context).pop(),
-          child: Icon(
+          child: const Icon(
             CupertinoIcons.chevron_left,
             size: 20,
           ),
         ),
-        middle: Text(
+        middle: const Text(
           "Normativas populares",
         ),
       ),
@@ -76,7 +77,7 @@ class _PopularNormativeScreenState extends State<PopularNormativeScreen> {
         future: _popularNormatives(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CupertinoActivityIndicator());
+            return const Center(child: CupertinoActivityIndicator());
           } else {
             if (snapshot.hasError) {
               return Center(
@@ -85,18 +86,18 @@ class _PopularNormativeScreenState extends State<PopularNormativeScreen> {
                 ),
               );
             } else {
-              var _normatives = snapshot.data as List<Normative>;
+              var normatives = snapshot.data as List<Normative>;
               return Container(
-                padding: EdgeInsets.all(18),
+                padding: const EdgeInsets.all(18),
                 width: MediaQuery.of(context).size.width,
                 child: ListView.separated(
-                    separatorBuilder: (context, index) => SizedBox(
+                    separatorBuilder: (context, index) => const SizedBox(
                           height: 8,
                         ),
-                    itemCount: _normatives.length,
+                    itemCount: normatives.length,
                     itemBuilder: (context, index) {
-                      var _normative = _normatives[index];
-                      return NormativeItem(normative: _normative);
+                      var normative = normatives[index];
+                      return NormativeItem(normative: normative);
                     }),
               );
             }

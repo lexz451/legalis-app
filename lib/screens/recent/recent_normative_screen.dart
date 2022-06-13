@@ -1,14 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:legalis/main.dart';
-import 'package:legalis/model/gazette.dart';
-import 'package:legalis/model/normative.dart';
 import 'package:legalis/model/resource.dart';
 import 'package:legalis/screens/recent/recent_normative_viewmodel.dart';
 import 'package:legalis/theme.dart';
 import 'package:legalis/widget/action_icon.dart';
-import 'package:legalis/widget/normative_item.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -66,13 +62,13 @@ class _RecentNormativeState extends State<RecentNormative> {
                               color: AppTheme.backgroundColor.withOpacity(.25),
                             ),
                             child: Builder(builder: (context) {
-                              final _gazette = viewModel.gazette.data;
-                              if (_gazette == null) return const SizedBox();
+                              final gazette = viewModel.gazette.data;
+                              if (gazette == null) return const SizedBox();
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    _gazette.name?.toUpperCase() ?? "",
+                                    gazette.name?.toUpperCase() ?? "",
                                     style: TextStyle(
                                         color: AppTheme.primary,
                                         fontWeight: FontWeight.bold,
@@ -89,7 +85,7 @@ class _RecentNormativeState extends State<RecentNormative> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                                _gazette.type?.toUpperCase() ??
+                                                gazette.type?.toUpperCase() ??
                                                     "-",
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.bold,
@@ -99,8 +95,7 @@ class _RecentNormativeState extends State<RecentNormative> {
                                               height: 8,
                                             ),
                                             Text(
-                                                _gazette.date?.toString() ??
-                                                    "-",
+                                                gazette.date?.toString() ?? "-",
                                                 style: const TextStyle(
                                                     fontSize: 12,
                                                     fontWeight:

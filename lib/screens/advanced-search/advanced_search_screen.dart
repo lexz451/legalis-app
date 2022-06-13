@@ -2,14 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:legalis/di.dart';
-import 'package:legalis/main.dart';
 import 'package:legalis/model/search_option.dart';
 import 'package:legalis/repositories/normative_repository.dart';
 import 'package:legalis/screens/advanced-search/advanced_search_viewmodel.dart';
 import 'package:legalis/screens/app_viewmodel.dart';
 import 'package:legalis/theme.dart';
 import 'package:legalis/utils/reactive_form_utils.dart';
-import 'package:legalis/widget/search_filters.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:routemaster/routemaster.dart';
@@ -50,16 +48,16 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
   //get thematics$ => _normativeRepository.getNormativeThematics();
 
   _onSubmit() {
-    final _values = _form.value;
-    Routemaster.of(context).push('/dashboard/search-results', queryParameters: {
-      'year': "${_values['year'] ?? ''}",
-      'year_gte': "${_values['year_gte'] ?? ''}",
-      'year_lte': "${_values['year_lte'] ?? ''}",
-      'organism': "${_values['organism'] ?? ''}",
-      'state': "${_values['state'] ?? ''}",
-      'tematica': "${_values['tematica'] ?? ''}",
-      'search_field': "${_values['search_field'] ?? ''}",
-      'text': "${_values['text'] ?? ''}"
+    final values = _form.value;
+    Routemaster.of(context).push('search-results', queryParameters: {
+      'year': "${values['year'] ?? ''}",
+      'year_gte': "${values['year_gte'] ?? ''}",
+      'year_lte': "${values['year_lte'] ?? ''}",
+      'organism': "${values['organism'] ?? ''}",
+      'state': "${values['state'] ?? ''}",
+      'tematica': "${values['tematica'] ?? ''}",
+      'search_field': "${values['search_field'] ?? ''}",
+      'text': "${values['text'] ?? ''}"
     });
   }
 
@@ -73,9 +71,9 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
     });
     _form.control('yearRange').valueChanges.listen((range) {
       if (range != null) {
-        var _range = range as RangeValues;
-        var start = _range.start;
-        var end = _range.end;
+        var r = range as RangeValues;
+        var start = r.start;
+        var end = r.end;
         _form.control('year_lte').updateValue(start);
         _form.control('year_gte').updateValue(end);
       }
@@ -172,7 +170,7 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
                       buildLabel('Temática'),
                       Consumer<AppViewModel>(
                         builder: (context, vm, child) =>
-                            buildAsyncRadioGroupControl<String>(
+                            buildTypeaheadControl<String>(
                                 'tematica', vm.thematics),
                       ),
                       const Divider(

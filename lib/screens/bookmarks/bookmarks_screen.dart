@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:legalis/model/resource.dart';
 import 'package:legalis/screens/app_viewmodel.dart';
-import 'package:legalis/screens/bookmarks/bookmarks_viewmodel.dart';
 import 'package:legalis/theme.dart';
 import 'package:legalis/widget/normative_item.dart';
 import 'package:provider/provider.dart';
@@ -57,7 +56,8 @@ class _BookmarksState extends State<Bookmarks> {
                             child: Text(value.bookmarks.exception ?? "Error"),
                           ),
                         );
-                      } else if (value.bookmarks.data!.isEmpty) {
+                      } else if (value.bookmarks.data == null ||
+                          value.bookmarks.data!.isEmpty) {
                         return SliverFillRemaining(
                           child: Center(
                             child: Column(

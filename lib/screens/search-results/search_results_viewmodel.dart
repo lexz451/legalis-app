@@ -13,8 +13,10 @@ class SearchResultsViewModel extends BaseModel {
 
   List<Normative> get norms => _results.data?.results ?? [];
   int get totalResults => _results.data?.totalCount ?? 0;
+  @override
   bool get isLoading => _results.state == ResourceState.loading;
   bool get hasErrors => _results.state == ResourceState.error;
+  @override
   String get error => _results.exception ?? "Unknown exception";
 
   setResults(Resource<Paged<Normative>> res) {
@@ -25,8 +27,8 @@ class SearchResultsViewModel extends BaseModel {
   Future<void> fetchResults(Map<String, dynamic> params) async {
     setResults(Resource.loading(data: _results.data));
     try {
-      final _res = await normativeRepository.searchNormatives(params);
-      setResults(Resource.complete(_res));
+      final res = await normativeRepository.searchNormatives(params);
+      setResults(Resource.complete(res));
     } catch (e) {
       LOGGER.e(e);
       setResults(Resource.error(e.toString(), data: _results.data));

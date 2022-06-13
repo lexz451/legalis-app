@@ -7,6 +7,7 @@ class HelpScreen extends StatefulWidget {
   const HelpScreen({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _HelpScreenState createState() => _HelpScreenState();
 }
 
@@ -65,7 +66,7 @@ class _HelpScreenState extends State<HelpScreen> {
                       ),
                     );
                   } else if (snapshot.hasData) {
-                    var _items = snapshot.data as List;
+                    var items = snapshot.data as List;
                     return Column(
                       children: [
                         const SizedBox(
@@ -77,9 +78,9 @@ class _HelpScreenState extends State<HelpScreen> {
                         ListView.builder(
                             shrinkWrap: true,
                             padding: const EdgeInsets.all(16),
-                            itemCount: _items.length,
+                            itemCount: items.length,
                             itemBuilder: (BuildContext context, index) {
-                              var item = _items[index];
+                              var item = items[index];
                               return Container(
                                 margin: const EdgeInsets.only(bottom: 18),
                                 padding: const EdgeInsets.only(bottom: 18),

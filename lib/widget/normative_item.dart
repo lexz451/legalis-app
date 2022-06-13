@@ -91,7 +91,7 @@ class _NormativeItemState extends State<NormativeItem> {
               ),
               GestureDetector(
                 onTap: () => Routemaster.of(context)
-                    .push("/normative/" + widget.normative.id),
+                    .push("normative/${widget.normative.id}"),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

@@ -1,4 +1,3 @@
-import 'package:get_it/get_it.dart';
 import 'package:legalis/di.dart';
 import 'package:legalis/main.dart';
 import 'package:legalis/model/person.dart';
@@ -19,8 +18,8 @@ class AboutViewModel extends BaseModel {
   loadTeam() async {
     setTeam(Resource.loading(data: _team.data));
     try {
-      final _team = await aboutRepository.fetchTeam();
-      setTeam(Resource.complete(_team));
+      final team = await aboutRepository.fetchTeam();
+      setTeam(Resource.complete(team));
     } catch (e) {
       LOGGER.e(e);
       setTeam(Resource.error(e.toString(), data: _team.data));

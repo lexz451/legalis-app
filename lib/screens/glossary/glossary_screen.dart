@@ -13,6 +13,7 @@ class GlossaryScreen extends StatefulWidget {
   const GlossaryScreen({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _GlossaryScreenState createState() => _GlossaryScreenState();
 }
 
@@ -35,6 +36,7 @@ class _GlossaryScreenState extends State<GlossaryScreen> {
         final index = viewModel.terms.data!.results.indexOf(el);
         _controller.jumpTo(index: index);
       }
+      // ignore: empty_catches
     } catch (e) {}
   }
 
@@ -156,31 +158,31 @@ class _GlossaryScreenState extends State<GlossaryScreen> {
                                 ),
                               );
 
-                              return SliverList(
-                                  delegate: SliverChildBuilderDelegate(
-                                      (context, index) {
-                                final item = terms[index];
-                                return Padding(
-                                  padding: const EdgeInsets.all(16),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        item.term.toUpperCase(),
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: AppTheme.primary),
-                                      ),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      Text(item.description ?? "-")
-                                    ],
-                                  ),
-                                );
-                              }, childCount: terms.length));
+                              // return SliverList(
+                              //     delegate: SliverChildBuilderDelegate(
+                              //         (context, index) {
+                              //   final item = terms[index];
+                              //   return Padding(
+                              //     padding: const EdgeInsets.all(16),
+                              //     child: Column(
+                              //       crossAxisAlignment:
+                              //           CrossAxisAlignment.start,
+                              //       children: [
+                              //         Text(
+                              //           item.term.toUpperCase(),
+                              //           style: TextStyle(
+                              //               fontSize: 16,
+                              //               fontWeight: FontWeight.bold,
+                              //               color: AppTheme.primary),
+                              //         ),
+                              //         const SizedBox(
+                              //           height: 8,
+                              //         ),
+                              //         Text(item.description ?? "-")
+                              //       ],
+                              //     ),
+                              //   );
+                              // }, childCount: terms.length));
                             })
                           ],
                         ),

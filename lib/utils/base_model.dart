@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:legalis/model/resource.dart';
 
 class BaseModel extends ChangeNotifier {
   bool _disposed = false;

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:legalis/main.dart';
 import 'package:legalis/model/resource.dart';
 import 'package:legalis/screens/app_viewmodel.dart';
 import 'package:legalis/screens/normative/normative_viewmodel.dart';
@@ -10,7 +9,6 @@ import 'package:legalis/widget/action_icon.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:provider/provider.dart';
 
 class NormativeScreen extends StatefulWidget {
   final String id;
@@ -41,6 +39,11 @@ class _NormativeScreenState extends State<NormativeScreen> {
         "https://api-gaceta.datalis.dev/files/${viewModel.gazette?.file}",
         viewModel.gazette?.file);
     viewModel.isDownloadingFile = false;
+  }
+
+  _searchByThematic(String thematic) {
+    Routemaster.of(context)
+        .push("/search-results", queryParameters: {'tematica': thematic});
   }
 
   @override
@@ -315,14 +318,14 @@ class _NormativeScreenState extends State<NormativeScreen> {
                                             fontWeight: FontWeight.bold),
                                       ),
                                       const SizedBox(
-                                        height: 8,
+                                        height: 16,
                                       ),
                                       Row(
                                         children: [
                                           const Text(
                                             "TIPO: ",
                                             style: TextStyle(
-                                                fontSize: 12,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                           Text(
@@ -330,7 +333,7 @@ class _NormativeScreenState extends State<NormativeScreen> {
                                                     .normative.data?.normtype ??
                                                 "-",
                                             style:
-                                                const TextStyle(fontSize: 12),
+                                                const TextStyle(fontSize: 14),
                                           )
                                         ],
                                       ),
@@ -344,7 +347,7 @@ class _NormativeScreenState extends State<NormativeScreen> {
                                           const Text(
                                             "EMISOR: ",
                                             style: TextStyle(
-                                                fontSize: 12,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                           Expanded(
@@ -353,7 +356,7 @@ class _NormativeScreenState extends State<NormativeScreen> {
                                                     .normative.data?.organism ??
                                                 "-",
                                             style:
-                                                const TextStyle(fontSize: 12),
+                                                const TextStyle(fontSize: 14),
                                           ))
                                         ],
                                       ),
@@ -365,7 +368,7 @@ class _NormativeScreenState extends State<NormativeScreen> {
                                           const Text(
                                             "AÑO: ",
                                             style: TextStyle(
-                                                fontSize: 12,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                           Text(
@@ -373,7 +376,7 @@ class _NormativeScreenState extends State<NormativeScreen> {
                                                     .toString() ??
                                                 "-",
                                             style:
-                                                const TextStyle(fontSize: 12),
+                                                const TextStyle(fontSize: 14),
                                           )
                                         ],
                                       ),
@@ -389,29 +392,36 @@ class _NormativeScreenState extends State<NormativeScreen> {
                                         height: 24,
                                       ),
                                       const Text(
-                                        "Palabras clave:",
+                                        "TEMÁTICAS:",
                                         style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
+                                            //color: Colors.black,
+                                            fontSize: 14,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       const SizedBox(
                                         height: 4,
                                       ),
                                       Wrap(
-                                        spacing: 4,
+                                        spacing: 8,
                                         direction: Axis.horizontal,
-                                        children: (viewModel
-                                                    .normative.data?.keywords ??
-                                                [])
-                                            .map((e) => Text(
-                                                  e,
-                                                  style: TextStyle(
-                                                      color:
-                                                          AppTheme.primaryLight,
-                                                      fontSize: 16),
-                                                ))
-                                            .toList(),
+                                        children:
+                                            (viewModel.normative.data?.tags ??
+                                                    [])
+                                                .map((e) => GestureDetector(
+                                                      onTap: () =>
+                                                          _searchByThematic(e),
+                                                      child: Text(
+                                                        e,
+                                                        style: TextStyle(
+                                                            color: AppTheme
+                                                                .primaryLight,
+                                                            fontSize: 14,
+                                                            decoration:
+                                                                TextDecoration
+                                                                    .underline),
+                                                      ),
+                                                    ))
+                                                .toList(),
                                       ),
                                     ],
                                   ),

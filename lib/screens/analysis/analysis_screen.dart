@@ -4,6 +4,8 @@ import 'package:legalis/theme.dart';
 import 'package:routemaster/routemaster.dart';
 
 class AnalysisScreen extends StatefulWidget {
+  const AnalysisScreen({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _AnalysisScreenState();
 }
@@ -23,16 +25,16 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
   ];
 
   Future<dynamic> _analysisContent() async {
-    return Future.delayed(Duration(milliseconds: 500), () => _content);
+    return Future.delayed(const Duration(milliseconds: 500), () => _content);
   }
 
   Widget _analysisCard(title, content) {
     return ExpandableNotifier(
       child: Container(
-        margin: EdgeInsets.all(12),
-        padding: EdgeInsets.only(left: 12, right: 12, top: 12, bottom: 2),
+        margin: const EdgeInsets.all(12),
+        padding: const EdgeInsets.only(left: 12, right: 12, top: 12, bottom: 2),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(4)),
+            borderRadius: const BorderRadius.all(Radius.circular(4)),
             color: AppTheme.primary.withOpacity(.5)),
         child: Column(
           children: [
@@ -40,7 +42,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
               scrollOnExpand: true,
               scrollOnCollapse: true,
               child: ExpandablePanel(
-                theme: ExpandableThemeData(
+                theme: const ExpandableThemeData(
                     useInkWell: false,
                     headerAlignment: ExpandablePanelHeaderAlignment.center,
                     hasIcon: false,
@@ -56,7 +58,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                 collapsed: Column(
                   children: [
                     Container(
-                      padding: EdgeInsets.only(bottom: 12, top: 12),
+                      padding: const EdgeInsets.only(bottom: 12, top: 12),
                       decoration: BoxDecoration(
                           border: Border(
                               bottom: BorderSide(
@@ -82,7 +84,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                 expanded: Column(
                   children: [
                     Container(
-                      padding: EdgeInsets.only(bottom: 12, top: 12),
+                      padding: const EdgeInsets.only(bottom: 12, top: 12),
                       decoration: BoxDecoration(
                           border: Border(
                               bottom: BorderSide(
@@ -117,18 +119,18 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
       navigationBar: CupertinoNavigationBar(
         leading: GestureDetector(
           onTap: () => Routemaster.of(context).pop(),
-          child: Icon(
+          child: const Icon(
             CupertinoIcons.chevron_left,
             size: 20,
           ),
         ),
-        middle: Text("Análisis"),
+        middle: const Text("Análisis"),
       ),
       child: FutureBuilder(
         future: _analysisContent(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CupertinoActivityIndicator(),
             );
           } else {
@@ -139,11 +141,11 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                 ),
               );
             } else {
-              var _content = snapshot.data as List;
+              var content = snapshot.data as List;
               return ListView.builder(
-                itemCount: _content.length,
+                itemCount: content.length,
                 itemBuilder: (context, index) {
-                  var item = _content[index];
+                  var item = content[index];
                   return _analysisCard(item['title'], item['text']);
                 },
               );

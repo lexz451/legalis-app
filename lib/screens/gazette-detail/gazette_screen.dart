@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:legalis/screens/gazette-detail/gazette_viewmodel.dart';
 import 'package:legalis/theme.dart';
-import 'package:legalis/widget/action_icon.dart';
 import 'package:legalis/widget/normative_item.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';

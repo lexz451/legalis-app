@@ -14,6 +14,7 @@ class FiltersSelector extends StatefulWidget {
   final List<Topic>? topics;
 
   @override
+  // ignore: library_private_types_in_public_api
   _FiltersSelectorState createState() => _FiltersSelectorState();
 }
 
@@ -121,8 +122,8 @@ class _FiltersSelectorState extends State<FiltersSelector> {
                     items: [
                       ..._years
                           .map((e) => DropdownMenuItem<int>(
-                                child: Text(e.toString()),
                                 value: e,
+                                child: Text(e.toString()),
                               ))
                           .toList()
                     ],

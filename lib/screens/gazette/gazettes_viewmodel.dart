@@ -34,6 +34,7 @@ class GazettesViewModel extends BaseModel {
     notifyListeners();
   }
 
+  // ignore: unnecessary_getters_setters
   List<GazetteType> get gazetteTypes {
     return _types;
   }
@@ -42,6 +43,7 @@ class GazettesViewModel extends BaseModel {
     _types = types;
   }
 
+  // ignore: unnecessary_getters_setters
   List<Topic> get normativeTopics {
     return _topics;
   }
@@ -52,10 +54,10 @@ class GazettesViewModel extends BaseModel {
 
   loadFilterData() async {
     filtersLoading = true;
-    final _topics = await normativeRepository.fetchNormativeTopics();
-    final _types = await gazetteRepository.fetchTypes();
-    normativeTopics = _topics.sublist(0, 10);
-    gazetteTypes = _types;
+    final topics = await normativeRepository.fetchNormativeTopics();
+    final types = await gazetteRepository.fetchTypes();
+    normativeTopics = topics.sublist(0, 10);
+    gazetteTypes = types;
     filtersLoading = false;
     loadGazettes(params: {'page_size': 5});
   }
@@ -63,8 +65,8 @@ class GazettesViewModel extends BaseModel {
   loadGazettes({params = const {}}) async {
     gazettes = Resource.loading();
     try {
-      final _gazettes = await gazetteRepository.fetchAll(params: params);
-      gazettes = Resource.complete(_gazettes);
+      final res = await gazetteRepository.fetchAll(params: params);
+      gazettes = Resource.complete(res);
     } catch (e) {
       gazettes = Resource.error(e.toString());
     }

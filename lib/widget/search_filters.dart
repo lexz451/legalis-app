@@ -1,28 +1,37 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:legalis/di.dart';
 import 'package:legalis/main.dart';
 import 'package:legalis/model/search_option.dart';
-import 'package:legalis/repositories/normative_repository.dart';
 import 'package:legalis/screens/app_viewmodel.dart';
 import 'package:legalis/theme.dart';
 import 'package:legalis/utils/reactive_form_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+// ignore: must_be_immutable
 class SearchFilters extends StatefulWidget {
   final Function? onSubmit;
+  final Map<String, dynamic> params;
 
-  const SearchFilters({required this.onSubmit, Key? key}) : super(key: key);
+  bool showGazetteTypeFilter;
+  bool showNormativeStateFilter;
+  bool showTextFilter;
+
+  SearchFilters(
+      {required this.onSubmit,
+      required this.params,
+      this.showGazetteTypeFilter = false,
+      this.showNormativeStateFilter = true,
+      this.showTextFilter = true,
+      Key? key})
+      : super(key: key);
 
   @override
   State<SearchFilters> createState() => _SearchFiltersState();
 }
 
 class _SearchFiltersState extends State<SearchFilters> {
-  final _normativeRepository = getIt<NormativeRepository>();
-
   final _years = [for (var i = 1990; i < DateTime.now().year + 1; i++) i];
 
   final _searchOptions = [
@@ -42,7 +51,8 @@ class _SearchFiltersState extends State<SearchFilters> {
     'search_field': FormControl<String>(value: 'name'),
     'inclusive_search': FormControl<String>(),
     'exclusive_search': FormControl<String>(),
-    'text': FormControl<String>()
+    'text': FormControl<String>(),
+    'type': FormControl<String>()
   });
 
   final _controller = ExpandableController(initialExpanded: false);
@@ -57,9 +67,9 @@ class _SearchFiltersState extends State<SearchFilters> {
     });
     _form.control('yearRange').valueChanges.listen((range) {
       if (range != null) {
-        var _range = range as RangeValues;
-        var start = _range.start;
-        var end = _range.end;
+        var r = range as RangeValues;
+        var start = r.start;
+        var end = r.end;
         _form.control('year_lte').updateValue(start);
         _form.control('year_gte').updateValue(end);
       }
@@ -73,11 +83,12 @@ class _SearchFiltersState extends State<SearchFilters> {
     _form.control('exclusive_search').valueChanges.listen((value) {
       _form.control("text").updateValue("$value");
     });
+    _form.control('tematica').patchValue(widget.params['tematica']);
   }
 
   _onSubmit() {
     LOGGER.d("Advanced filters form submitted");
-    LOGGER.d(_form.value);
+    //LOGGER.d(_form.value);
     _controller.toggle();
     widget.onSubmit!(_form.value);
   }
@@ -153,39 +164,72 @@ class _SearchFiltersState extends State<SearchFilters> {
                       height: 32,
                       color: CupertinoColors.separator,
                     ),
-                    buildLabel('Estado'),
-                    Consumer<AppViewModel>(
-                      builder: (context, vm, child) =>
-                          buildAsyncRadioGroupControl<String>(
-                              'state', vm.states),
-                    ),
-                    const Divider(
-                      height: 32,
-                      color: CupertinoColors.separator,
-                    ),
+                    if (widget.showNormativeStateFilter)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          buildLabel('Estado'),
+                          Consumer<AppViewModel>(
+                            builder: (context, vm, child) =>
+                                buildAsyncRadioGroupControl<String>(
+                                    'state', vm.states),
+                          ),
+                          const Divider(
+                            height: 32,
+                            color: CupertinoColors.separator,
+                          ),
+                        ],
+                      ),
+                    if (widget.showGazetteTypeFilter)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          buildLabel('Edición'),
+                          Consumer<AppViewModel>(
+                            builder: (context, vm, child) =>
+                                buildAsyncRadioGroupControl<String>(
+                                    'type', vm.editions),
+                          ),
+                          const Divider(
+                            height: 32,
+                            color: CupertinoColors.separator,
+                          ),
+                        ],
+                      ),
                     buildLabel('Temática'),
+                    // Consumer<AppViewModel>(
+                    //   builder: (context, vm, child) =>
+                    //       buildAsyncRadioGroupControl<String>(
+                    //           'tematica', vm.thematics),
+                    // ),
                     Consumer<AppViewModel>(
                       builder: (context, vm, child) =>
-                          buildAsyncRadioGroupControl<String>(
-                              'tematica', vm.thematics),
+                          buildTypeaheadControl("tematica", vm.thematics),
                     ),
+
                     const Divider(
                       height: 32,
                       color: CupertinoColors.separator,
                     ),
-                    buildLabel('Palabras y frases'),
-                    buildRadioGroupControl<String>(
-                        'search_field', _searchOptions),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    buildInputControl('inclusive_search',
-                        hint: "Con esta palabra o frase"),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    buildInputControl('exclusive_search',
-                        hint: "Con alguna de estas palabras"),
+                    if (widget.showTextFilter)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          buildLabel('Palabras y frases'),
+                          buildRadioGroupControl<String>(
+                              'search_field', _searchOptions),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          buildInputControl('inclusive_search',
+                              hint: "Con esta palabra o frase"),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          buildInputControl('exclusive_search',
+                              hint: "Con alguna de estas palabras"),
+                        ],
+                      ),
                     const SizedBox(
                       height: 12,
                     ),

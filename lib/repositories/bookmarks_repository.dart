@@ -6,27 +6,27 @@ class BookmarksRepository {
   final localStorageService = GetIt.I<StorageService>();
 
   Future<List<Normative>> getBookmarks() async {
-    final _bookmarks = localStorageService.getItem('bookmarks');
-    if (_bookmarks == null) return [];
-    return List<Normative>.from(_bookmarks.map((e) => Normative.fromMap(e)));
+    final bookmarks = localStorageService.getItem('bookmarks');
+    if (bookmarks == null) return [];
+    return List<Normative>.from(bookmarks.map((e) => Normative.fromMap(e)));
   }
 
   Future<bool> addToBookmarks(Normative normative) async {
-    final _bookmarks = localStorageService.getItem('bookmarks') ?? [];
-    _bookmarks.add(normative.toMap());
-    return localStorageService.saveItem('bookmarks', _bookmarks);
+    final bookmarks = localStorageService.getItem('bookmarks') ?? [];
+    bookmarks.add(normative.toMap());
+    return localStorageService.saveItem('bookmarks', bookmarks);
   }
 
   Future<bool> removeFromBookmarks(Normative normative) {
-    final _bookmarks =
+    final bookmarks =
         (localStorageService.getItem('bookmarks') ?? []) as List<dynamic>;
-    _bookmarks.removeWhere((e) => e['id'] == normative.id);
-    return localStorageService.saveItem('bookmarks', _bookmarks);
+    bookmarks.removeWhere((e) => e['id'] == normative.id);
+    return localStorageService.saveItem('bookmarks', bookmarks);
   }
 
   bool isInBookmarks(Normative normative) {
-    final _bookmarks =
+    final bookmarks =
         (localStorageService.getItem('bookmarks') ?? []) as List<dynamic>;
-    return _bookmarks.where((e) => e['id'] == normative.id).isNotEmpty;
+    return bookmarks.where((e) => e['id'] == normative.id).isNotEmpty;
   }
 }

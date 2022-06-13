@@ -6,7 +6,7 @@ class DirectoryRepository {
   final apiService = GetIt.I<APIService>();
 
   Future<List<Directory>> fetchAll() async {
-    var _res = await apiService.get("/directorios");
-    return List<Directory>.from((_res ?? []).map((e) => Directory.fromMap(e)));
+    var res = await apiService.get("/directorios");
+    return List<Directory>.from((res ?? []).map((e) => Directory.fromMap(e)));
   }
 }

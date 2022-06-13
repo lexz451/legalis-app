@@ -12,6 +12,7 @@ class AboutScreen extends StatefulWidget {
   const AboutScreen({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _AboutScreenState createState() => _AboutScreenState();
 }
 
@@ -105,15 +106,15 @@ class _AboutScreenState extends State<AboutScreen> {
                                       begin: FractionalOffset.centerLeft,
                                       end: FractionalOffset.centerRight,
                                       colors: [
-                                        Colors.transparent,
-                                        Colors.blueAccent.withOpacity(.5),
-                                        Colors.transparent
-                                      ],
+                                    Colors.transparent,
+                                    Colors.blueAccent.withOpacity(.5),
+                                    Colors.transparent
+                                  ],
                                       stops: const [
-                                        .0,
-                                        .5,
-                                        1
-                                      ])),
+                                    .0,
+                                    .5,
+                                    1
+                                  ])),
                             ),
                             const SizedBox(
                               height: 24,
@@ -130,8 +131,7 @@ class _AboutScreenState extends State<AboutScreen> {
                               Text(
                                 "Equipo".toUpperCase(),
                                 style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
+                                    fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             const SizedBox(
                               height: 12,
@@ -147,21 +147,21 @@ class _AboutScreenState extends State<AboutScreen> {
                           if (viewModel.team.state == ResourceState.error) {
                             return SliverFillRemaining(
                               child: Center(
-                                child: Text(viewModel.team.exception ?? "Error"),
+                                child:
+                                    Text(viewModel.team.exception ?? "Error"),
                               ),
                             );
                           }
-                          final _team = viewModel.team.data ?? [];
+                          final team = viewModel.team.data ?? [];
                           return SliverList(
                             delegate: SliverChildListDelegate(
-                                [..._team.map((e) => _buildTeamInfo(e))]),
+                                [...team.map((e) => _buildTeamInfo(e))]),
                           );
                         },
                       ),
                     )
                   ],
-                )
-                ,
+                ),
                 if (viewModel.team.state == ResourceState.loading)
                   Positioned(
                       top: 0,

@@ -1,13 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:legalis/model/selectable_item.dart';
 import 'package:legalis/screens/search-results/search_results_viewmodel.dart';
 import 'package:legalis/theme.dart';
-import 'package:legalis/widget/filters_selector.dart';
 import 'package:legalis/widget/normative_item.dart';
 import 'package:legalis/widget/pagination.dart';
-import 'package:legalis/widget/radiogroup.dart';
 import 'package:legalis/widget/search_filters.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
@@ -96,6 +93,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                                 Padding(
                                   padding: const EdgeInsets.all(16),
                                   child: SearchFilters(
+                                    params: _params,
                                     onSubmit: (params) =>
                                         _onFilterChange(params),
                                   ),
@@ -103,50 +101,55 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 16),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                          child: Text(
-                                              "Mostrando ${viewModel.totalResults} resultados",
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                              ))),
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            "Mas relevantes",
-                                            style: TextStyle(fontSize: 12),
-                                          ),
-                                          Radio(
-                                            visualDensity:
-                                                VisualDensity.compact,
-                                            value: 1,
-                                            groupValue: sortBy,
-                                            onChanged: (v) => setSortBy(v),
-                                          )
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        width: 4,
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            "Mas recientes",
-                                            style: TextStyle(fontSize: 12),
-                                          ),
-                                          Radio(
-                                              visualDensity:
-                                                  VisualDensity.compact,
-                                              value: 2,
-                                              groupValue: sortBy,
-                                              onChanged: (value) {
-                                                setSortBy(value);
-                                              })
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                                  child: viewModel.totalResults > 0
+                                      ? Row(
+                                          children: [
+                                            Expanded(
+                                                child: Text(
+                                                    "${viewModel.totalResults} resultados",
+                                                    style: const TextStyle(
+                                                      fontSize: 12,
+                                                    ))),
+                                            Row(
+                                              children: [
+                                                const Text(
+                                                  "Mas relevantes",
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                ),
+                                                Radio(
+                                                  visualDensity:
+                                                      VisualDensity.compact,
+                                                  value: 1,
+                                                  groupValue: sortBy,
+                                                  onChanged: (v) =>
+                                                      setSortBy(v),
+                                                )
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              width: 4,
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Text(
+                                                  "Mas recientes",
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                ),
+                                                Radio(
+                                                    visualDensity:
+                                                        VisualDensity.compact,
+                                                    value: 2,
+                                                    groupValue: sortBy,
+                                                    onChanged: (value) {
+                                                      setSortBy(value);
+                                                    })
+                                              ],
+                                            ),
+                                          ],
+                                        )
+                                      : const SizedBox(),
                                 ),
                                 const SizedBox(
                                   height: 8,

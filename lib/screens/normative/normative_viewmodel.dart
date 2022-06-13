@@ -1,7 +1,4 @@
-import 'package:flutter/foundation.dart';
-import 'package:get_it/get_it.dart';
 import 'package:legalis/di.dart';
-import 'package:legalis/main.dart';
 import 'package:legalis/model/gazette.dart';
 import 'package:legalis/model/normative.dart';
 import 'package:legalis/model/resource.dart';
@@ -27,6 +24,7 @@ class NormativeViewModel extends BaseModel {
     notifyListeners();
   }
 
+  // ignore: unnecessary_getters_setters
   Gazette? get gazette => _gazette;
   set gazette(Gazette? gazette) {
     _gazette = gazette;
@@ -54,10 +52,10 @@ class NormativeViewModel extends BaseModel {
   loadNormative(String id) async {
     setLoading(true);
     try {
-      final _norm = await normativeRepository.fetchById(id);
-      final _gazette = await gazetteRepository.fetchById(_norm.gazette);
-      gazette = _gazette;
-      normative = Resource.complete(_norm);
+      final norm = await normativeRepository.fetchById(id);
+      final gaz = await gazetteRepository.fetchById(norm.gazette);
+      gazette = gaz;
+      normative = Resource.complete(norm);
       setLoading(false);
     } catch (e) {
       normative = Resource.error(e.toString());

@@ -22,8 +22,8 @@ class GazetteViewModel extends BaseModel {
   fetchGazette(id) async {
     setGazette(Resource.loading(data: _gazette.data));
     try {
-      final _res = await gazetteRepository.fetchById(id);
-      setGazette(Resource.complete(_res));
+      final res = await gazetteRepository.fetchById(id);
+      setGazette(Resource.complete(res));
     } catch (e) {
       LOGGER.e(e);
       setGazette(Resource.error(e.toString(), data: _gazette.data));

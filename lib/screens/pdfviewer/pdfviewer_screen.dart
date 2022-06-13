@@ -18,6 +18,7 @@ class PdfViewerScreen extends StatefulWidget {
   final int startpage;
 
   @override
+  // ignore: library_private_types_in_public_api
   _PdfViewerScreenState createState() => _PdfViewerScreenState();
 }
 
@@ -62,11 +63,11 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
             builder: (context, snapshot) {
               LOGGER.d("Loading pdf file");
               if (snapshot.hasData) {
-                final _file = snapshot.data;
-                if (_file != null) {
+                final file = snapshot.data;
+                if (file != null) {
                   LOGGER.d("Pdf file loaded from downloads");
                   return SfPdfViewer.file(
-                    _file,
+                    file,
                     controller: _controller,
                   );
                 } else {
