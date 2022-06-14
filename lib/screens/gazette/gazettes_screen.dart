@@ -7,6 +7,7 @@ import 'package:legalis/model/resource.dart';
 import 'package:legalis/screens/gazette/gazettes_viewmodel.dart';
 import 'package:legalis/theme.dart';
 import 'package:legalis/widget/gazette_item.dart';
+import 'package:legalis/widget/pagination.dart';
 import 'package:legalis/widget/search_filters.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
@@ -22,10 +23,27 @@ class GazettesScreen extends StatefulWidget {
 class _GazettesScreenState extends State<GazettesScreen> {
   final viewModel = GazettesViewModel();
 
+  final pageSize = 5;
+
+  Map<String, dynamic> _params = {'page': 1, 'page_size': 5};
+
+  int get currentPage => _params['page'] ?? 1;
+
+  _onFiltersChange(params) {
+    _params = {..._params, ...params, 'page': 1};
+    viewModel.loadGazettes(params: _params);
+  }
+
+  _onPageChange(page) {
+    _params = {..._params, 'page': page};
+    viewModel.loadGazettes(params: _params);
+  }
+
   @override
   void initState() {
     super.initState();
     viewModel.loadFilterData();
+    viewModel.loadGazettes(params: _params);
   }
 
   @override
@@ -61,8 +79,9 @@ class _GazettesScreenState extends State<GazettesScreen> {
                                 padding: const EdgeInsets.all(16),
                                 sliver: SliverToBoxAdapter(
                                   child: SearchFilters(
-                                    onSubmit: (params) => {},
-                                    params: const {},
+                                    onSubmit: (params) =>
+                                        _onFiltersChange(params),
+                                    params: _params,
                                     showGazetteTypeFilter: true,
                                     showNormativeStateFilter: false,
                                     showTextFilter: false,
@@ -90,7 +109,16 @@ class _GazettesScreenState extends State<GazettesScreen> {
                                 gazette: item,
                               );
                             }, childCount: gazettes.length));
-                          })
+                          }),
+                          if (viewModel.totalResults > 0 &&
+                              viewModel.totalResults > pageSize)
+                            SliverToBoxAdapter(
+                              child: Pagination(
+                                  totalResults: viewModel.totalResults,
+                                  pageSize: pageSize,
+                                  onPageChange: _onPageChange,
+                                  currentPage: currentPage),
+                            )
                         ],
                       ),
                       if (viewModel.gazettes.state == ResourceState.loading)

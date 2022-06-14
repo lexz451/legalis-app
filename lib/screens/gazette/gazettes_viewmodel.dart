@@ -29,6 +29,8 @@ class GazettesViewModel extends BaseModel {
     return _gazettes;
   }
 
+  int get totalResults => _gazettes.data?.totalCount ?? 0;
+
   set gazettes(Resource<Paged<Gazette>> gazettes) {
     _gazettes = gazettes;
     notifyListeners();
@@ -59,7 +61,6 @@ class GazettesViewModel extends BaseModel {
     normativeTopics = topics.sublist(0, 10);
     gazetteTypes = types;
     filtersLoading = false;
-    loadGazettes(params: {'page_size': 5});
   }
 
   loadGazettes({params = const {}}) async {

@@ -74,7 +74,7 @@ final routeMap = RouteMap(routes: {
 
   '/dashboard/normative/:id': (route) => _goToNormative(route),
 
-  '/search-results': (route) =>
+  '/dashboard/search-results': (route) =>
       CupertinoPage(child: SearchResultsScreen(params: route.queryParameters)),
 
   '/normative/:id': (route) => _goToNormative(route),
