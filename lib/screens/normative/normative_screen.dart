@@ -121,7 +121,7 @@ class _NormativeScreenState extends State<NormativeScreen> {
                                                   Icon(
                                                     CupertinoIcons.doc_text,
                                                     color: Colors.white70,
-                                                    size: 20,
+                                                    size: 16,
                                                   ),
                                                   SizedBox(
                                                     width: 4,
@@ -158,7 +158,7 @@ class _NormativeScreenState extends State<NormativeScreen> {
                                                               .checkmark_square,
                                                           color:
                                                               AppTheme.accent,
-                                                          size: 20,
+                                                          size: 16,
                                                         ),
                                                         const SizedBox(
                                                           width: 4,
@@ -177,8 +177,8 @@ class _NormativeScreenState extends State<NormativeScreen> {
                                                       .isDownloadingFile) {
                                                     return Row(
                                                       children: const [
-                                                        SpinKitCircle(
-                                                          size: 20,
+                                                        SpinKitPulse(
+                                                          size: 16,
                                                           color: Colors.white70,
                                                         ),
                                                         SizedBox(
@@ -203,7 +203,7 @@ class _NormativeScreenState extends State<NormativeScreen> {
                                                           CupertinoIcons
                                                               .arrow_down,
                                                           color: Colors.white70,
-                                                          size: 20,
+                                                          size: 16,
                                                         ),
                                                         SizedBox(
                                                           width: 4,
@@ -403,6 +403,7 @@ class _NormativeScreenState extends State<NormativeScreen> {
                                       ),
                                       Wrap(
                                         spacing: 8,
+                                        runSpacing: 4,
                                         direction: Axis.horizontal,
                                         children:
                                             (viewModel.normative.data?.tags ??
@@ -415,7 +416,9 @@ class _NormativeScreenState extends State<NormativeScreen> {
                                                         style: TextStyle(
                                                             color: AppTheme
                                                                 .primaryLight,
-                                                            fontSize: 14,
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.bold,
                                                             decoration:
                                                                 TextDecoration
                                                                     .underline),

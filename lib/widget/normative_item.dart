@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:html/parser.dart';
 import 'package:legalis/model/normative.dart';
 import 'package:legalis/screens/app_viewmodel.dart';
 import 'package:legalis/theme.dart';
@@ -36,6 +38,14 @@ class _NormativeItemState extends State<NormativeItem> {
 
   _share() {
     Share.share('https://legalis.netlify.app/normativa/${normative.id}');
+  }
+
+  String? _parseHtmlString(String htmlString) {
+    final document = parse(htmlString);
+    final String? parsedString =
+        parse(document.body?.text).documentElement?.text;
+
+    return parsedString;
   }
 
   @override
@@ -91,7 +101,7 @@ class _NormativeItemState extends State<NormativeItem> {
               ),
               GestureDetector(
                 onTap: () => Routemaster.of(context)
-                    .push("normative/${widget.normative.id}"),
+                    .push("/normative/${widget.normative.id}"),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -99,7 +109,7 @@ class _NormativeItemState extends State<NormativeItem> {
                       height: 8,
                     ),
                     Text(
-                      widget.normative.name,
+                      _parseHtmlString(widget.normative.name) ?? "",
                       style: const TextStyle(
                           fontSize: 16, fontWeight: FontWeight.bold),
                     ),
@@ -158,7 +168,7 @@ class _NormativeItemState extends State<NormativeItem> {
                       height: 4,
                     ),
                     const Text(
-                      "Palabras clave:",
+                      "Tématicas:",
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 12,
@@ -168,16 +178,20 @@ class _NormativeItemState extends State<NormativeItem> {
                       height: 2,
                     ),
                     Wrap(
-                      spacing: 2,
+                      spacing: 8,
+                      runSpacing: 4,
                       direction: Axis.horizontal,
                       clipBehavior: Clip.antiAlias,
-                      children: widget.normative.keywords
+                      children: widget.normative.tags
                           .map((e) => Text(
                                 e,
                                 overflow: TextOverflow.ellipsis,
                                 textWidthBasis: TextWidthBasis.parent,
                                 style: TextStyle(
-                                    color: AppTheme.primaryLight, fontSize: 11),
+                                    color: AppTheme.primaryLight,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.underline),
                               ))
                           .toList(),
                     ),

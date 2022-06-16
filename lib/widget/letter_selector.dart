@@ -59,10 +59,10 @@ class _LetterSelectorState extends State<LetterSelector> {
       decoration: BoxDecoration(
           color: Colors.black.withOpacity(.05),
           borderRadius: BorderRadius.circular(8)),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(8),
       child: Wrap(
-          spacing: 14,
-          runSpacing: 4,
+          spacing: 8,
+          runSpacing: 2,
           alignment: WrapAlignment.center,
           children: [
             ..._letters.map((e) => InkWell(
@@ -76,7 +76,7 @@ class _LetterSelectorState extends State<LetterSelector> {
                               ? TextDecoration.underline
                               : TextDecoration.none,
                           fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                          fontSize: 16,
                           color: e == _selected
                               ? AppTheme.accent
                               : Colors.black38),

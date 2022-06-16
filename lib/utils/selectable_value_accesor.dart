@@ -9,7 +9,7 @@ class SelectableValueAccesor<T>
 
   @override
   SelectableItem<T>? modelToViewValue(T? modelValue) {
-    return modelValue == null
+    return modelValue == null || modelValue == ""
         ? null
         : data.firstWhere((e) => e.getValue() == modelValue);
   }

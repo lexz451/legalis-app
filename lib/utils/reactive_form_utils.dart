@@ -6,6 +6,7 @@ import 'package:legalis/model/selectable_item.dart';
 import 'package:legalis/theme.dart';
 import 'package:legalis/utils/infinite_listview.dart';
 import 'package:legalis/utils/selectable_value_accesor.dart';
+import 'package:path/path.dart';
 import 'package:reactive_flutter_typeahead/reactive_flutter_typeahead.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_range_slider/reactive_range_slider.dart';
@@ -23,7 +24,7 @@ Widget buildInputControl<T>(String control, {String hint = ""}) {
       hintText: hint, filled: true,
       isDense: true,
       //isCollapsed: true,
-      contentPadding: const EdgeInsets.all(12),
+      contentPadding: const EdgeInsets.all(14),
       border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
     ),
@@ -48,16 +49,31 @@ Widget buildTypeaheadControl<T>(
         ),
       );
     }
+    final formGroup = ReactiveForm.of(context) as FormGroup;
+    final formControl = formGroup.control(control);
     return ReactiveTypeAhead<T, SelectableItem<T>>(
         formControlName: control,
         stringify: (item) => item.getLabel(),
         valueAccessor: SelectableValueAccesor<T>(data: items),
-        getImmediateSuggestions: true,
+        getImmediateSuggestions: false,
         textFieldConfiguration: TextFieldConfiguration(
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
-              hintText: "Buscar...", filled: true,
+              hintText: "Buscar...",
+              filled: true,
               isDense: true,
+              suffixIcon: formControl.isNotNull
+                  ? GestureDetector(
+                      onTap: () => formControl.reset(),
+                      child: const Icon(
+                        CupertinoIcons.clear,
+                        size: 14,
+                      ),
+                    )
+                  : const Icon(
+                      CupertinoIcons.search,
+                      size: 16,
+                    ),
               //isCollapsed: true,
               contentPadding: const EdgeInsets.all(12),
               border: OutlineInputBorder(
@@ -245,46 +261,21 @@ Widget buildRadioGroupControl<T>(String control, List<SelectableItem<T>> items,
 
 Widget buildDropdownControl<T>(String control, Iterable<T> items,
     {String hint = "Seleccionar"}) {
-  return ReactiveDropdownField<T>(
-      formControlName: control,
-      hint: Text(hint),
-      isExpanded: true,
-      icon: const Icon(
-        CupertinoIcons.chevron_down,
-        size: 14,
-      ),
-      borderRadius: BorderRadius.circular(4),
-      menuMaxHeight: 300,
-      focusColor: Colors.transparent,
-      decoration: InputDecoration(
-        filled: true,
-        isDense: true,
-        isCollapsed: true,
-        contentPadding: const EdgeInsets.all(10),
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide.none),
-      ),
-      items: [
-        for (var item in items)
-          DropdownMenuItem<T>(value: item, child: Text(item.toString()))
-      ]);
-}
-
-Widget buildAsyncDropdownControl<T>(String control, Resource<List<T>> resource,
-    {String hint = "Seleccionar"}) {
   return Builder(
     builder: (context) {
-      var isLoading = resource.state == ResourceState.loading;
-      var items = resource.data ?? [];
+      final formGroup = ReactiveForm.of(context) as FormGroup;
+      final formControl = formGroup.control(control);
       return ReactiveDropdownField<T>(
           formControlName: control,
           hint: Text(hint),
           isExpanded: true,
-          icon: isLoading
-              ? const CupertinoActivityIndicator(
-                  radius: 8.0,
-                  color: CupertinoColors.secondaryLabel,
+          icon: formControl.isNotNull
+              ? GestureDetector(
+                  onTap: () => formControl.reset(),
+                  child: const Icon(
+                    CupertinoIcons.clear,
+                    size: 14,
+                  ),
                 )
               : const Icon(
                   CupertinoIcons.chevron_down,
@@ -292,12 +283,56 @@ Widget buildAsyncDropdownControl<T>(String control, Resource<List<T>> resource,
                 ),
           borderRadius: BorderRadius.circular(4),
           menuMaxHeight: 300,
-          focusColor: Colors.transparent,
+          focusColor: AppTheme.accent,
+          decoration: InputDecoration(
+            filled: true,
+            isDense: true,
+            contentPadding: const EdgeInsets.all(12),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none),
+          ),
+          items: [
+            for (var item in items)
+              DropdownMenuItem<T>(value: item, child: Text(item.toString()))
+          ]);
+    },
+  );
+}
+
+Widget buildAsyncDropdownControl<T>(String control, Resource<List<T>> resource,
+    {String hint = "Seleccionar"}) {
+  return Builder(
+    builder: (context) {
+      final formGroup = ReactiveForm.of(context) as FormGroup;
+      final formControl = formGroup.control(control);
+      var isLoading = resource.state == ResourceState.loading;
+      var items = resource.data ?? [];
+      return ReactiveDropdownField<T>(
+          formControlName: control,
+          hint: Text(hint),
+          isExpanded: true,
+          icon: formControl.isNotNull
+              ? GestureDetector(
+                  onTap: () => formControl.reset(),
+                  child: const Icon(
+                    CupertinoIcons.clear,
+                    size: 14,
+                  ),
+                )
+              : const Icon(
+                  CupertinoIcons.chevron_down,
+                  size: 14,
+                ),
+          borderRadius: BorderRadius.circular(4),
+          readOnly: isLoading,
+          menuMaxHeight: 300,
+          focusColor: AppTheme.accent,
           decoration: InputDecoration(
             filled: true,
             isDense: true,
             //isCollapsed: true,
-            contentPadding: const EdgeInsets.all(10),
+            contentPadding: const EdgeInsets.all(12),
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide.none),

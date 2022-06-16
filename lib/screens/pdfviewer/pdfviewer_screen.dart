@@ -62,7 +62,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
             future: file,
             builder: (context, snapshot) {
               LOGGER.d("Loading pdf file");
-              if (snapshot.hasData) {
+              if (snapshot.connectionState == ConnectionState.done) {
                 final file = snapshot.data;
                 if (file != null) {
                   LOGGER.d("Pdf file loaded from downloads");

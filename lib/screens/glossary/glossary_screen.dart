@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:legalis/model/resource.dart';
 import 'package:legalis/screens/glossary/glossary_viewmodel.dart';
 import 'package:legalis/theme.dart';
@@ -113,8 +114,8 @@ class _GlossaryScreenState extends State<GlossaryScreen> {
                                     padding: const EdgeInsets.only(
                                         top: 4, bottom: 4, left: 8),
                                     decoration: BoxDecoration(
-                                        color:
-                                            AppTheme.primary.withOpacity(.10),
+                                        //backgroundBlendMode: BlendMode.multiply,
+                                        color: HexColor("#dfe5e8"),
                                         borderRadius: BorderRadius.circular(2)),
                                     height: 24,
                                     child: Row(
@@ -153,36 +154,10 @@ class _GlossaryScreenState extends State<GlossaryScreen> {
                                   itemComparator: (item1, item2) =>
                                       item1.id.compareTo(item2.id), // optional
                                   //useStickyGroupSeparators: true, // optional
-                                  floatingHeader: false, // optional
+                                  floatingHeader: true, // optional
                                   order: StickyGroupedListOrder.ASC, // optional
                                 ),
                               );
-
-                              // return SliverList(
-                              //     delegate: SliverChildBuilderDelegate(
-                              //         (context, index) {
-                              //   final item = terms[index];
-                              //   return Padding(
-                              //     padding: const EdgeInsets.all(16),
-                              //     child: Column(
-                              //       crossAxisAlignment:
-                              //           CrossAxisAlignment.start,
-                              //       children: [
-                              //         Text(
-                              //           item.term.toUpperCase(),
-                              //           style: TextStyle(
-                              //               fontSize: 16,
-                              //               fontWeight: FontWeight.bold,
-                              //               color: AppTheme.primary),
-                              //         ),
-                              //         const SizedBox(
-                              //           height: 8,
-                              //         ),
-                              //         Text(item.description ?? "-")
-                              //       ],
-                              //     ),
-                              //   );
-                              // }, childCount: terms.length));
                             })
                           ],
                         ),

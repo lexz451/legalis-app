@@ -51,9 +51,10 @@ class DownloadRepository {
       return null;
     }
     final dir = await getApplicationDocumentsDirectory();
-    final files = dir.listSync().whereType<File>().toList();
+    final files = dir.listSync().whereType<File?>().toList();
     if (files.isEmpty) return null;
-    return files.firstWhere((e) => e.path.endsWith(fileName));
+    return files.firstWhere((e) => e!.path.endsWith(fileName),
+        orElse: () => null);
   }
 
   Future downloadFile(String url, String fileName) async {

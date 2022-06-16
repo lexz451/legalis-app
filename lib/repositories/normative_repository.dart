@@ -19,6 +19,13 @@ class NormativeRepository {
     return Paged.fromMap(res, Normative.fromMap);
   }
 
+  Future<List<Normative>> fetchPopularNormatives() async {
+    final res = await apiService
+        .get("/normativas", params: {'page': 1, 'page_size': 10});
+    Paged<Normative> pagedRes = Paged.fromMap(res, Normative.fromMap);
+    return pagedRes.results;
+  }
+
   Future<List<Topic>> fetchNormativeTopics() async {
     var res = await apiService.get('/normativas/tematicas');
     return List.from(res ?? []).map((e) => Topic.fromMap(e)).toList();

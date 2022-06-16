@@ -130,12 +130,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         SearchBox(
                           onSubmit: (value) {
                             if (value != null && value.toString().isNotEmpty) {
-                              Routemaster.of(context).push(
-                                  '/dashboard/search-results',
-                                  queryParameters: {
-                                    'text':
-                                        value.toString().trim().toLowerCase()
-                                  });
+                              Routemaster.of(context)
+                                  .push('/search-results', queryParameters: {
+                                'text': value.toString().trim().toLowerCase()
+                              });
                             }
                           },
                         ),

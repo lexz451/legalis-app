@@ -1,6 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:legalis/model/normative.dart';
+import 'package:legalis/model/resource.dart';
+import 'package:legalis/screens/popular/popular_normatives_viewmodel.dart';
+import 'package:legalis/theme.dart';
 import 'package:legalis/widget/normative_item.dart';
+import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
 
 class PopularNormativeScreen extends StatefulWidget {
@@ -12,97 +18,77 @@ class PopularNormativeScreen extends StatefulWidget {
 }
 
 class _PopularNormativeScreenState extends State<PopularNormativeScreen> {
-  static final List<Normative> _normatives = [
-    Normative(
-      id: "b23fa0a01005c7230b8ef68b91197d41cb6896f5",
-      name: "Nombramiento de Manuel Pozo Nuñez como Embajador",
-      summary:
-          "Nombra como Embajador Extraordinario y Plenipotenciario de la República de Cuba en Mongolia a Manuel Pozo Núñez.",
-      organism: "Consejo de Estado",
-      state: "Vigente",
-      keywords: ["nombramiento", "Embajador"],
-      year: 1900,
-      normtype: "Acuerdo",
-      number: -1,
-      tags: [],
-    ),
-    Normative(
-      id: "b23fa0a01005c7230b8ef68b91197d41cb6896f5",
-      name: "Nombramiento de Manuel Pozo Nuñez como Embajador",
-      summary:
-          "Nombra como Embajador Extraordinario y Plenipotenciario de la República de Cuba en Mongolia a Manuel Pozo Núñez.",
-      organism: "Consejo de Estado",
-      state: "Vigente",
-      keywords: ["nombramiento", "Embajador"],
-      year: 1900,
-      normtype: "Acuerdo",
-      number: -1,
-      tags: [],
-    ),
-    Normative(
-      id: "b23fa0a01005c7230b8ef68b91197d41cb6896f5",
-      name: "Nombramiento de Manuel Pozo Nuñez como Embajador",
-      summary:
-          "Nombra como Embajador Extraordinario y Plenipotenciario de la República de Cuba en Mongolia a Manuel Pozo Núñez.",
-      organism: "Consejo de Estado",
-      state: "Vigente",
-      keywords: ["nombramiento", "Embajador"],
-      year: 1900,
-      normtype: "Acuerdo",
-      number: -1,
-      tags: [],
-    )
-  ];
+  final viewModel = PopularNormativeViewModel();
 
-  Future<List<Normative>> _popularNormatives() async {
-    return Future.delayed(const Duration(milliseconds: 500), () => _normatives);
+  @override
+  void initState() {
+    super.initState();
+    viewModel.fetchPopularNorms();
   }
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        leading: GestureDetector(
-          onTap: () => Routemaster.of(context).pop(),
-          child: const Icon(
-            CupertinoIcons.chevron_left,
-            size: 20,
+    return ChangeNotifierProvider.value(
+      value: viewModel,
+      child: Material(
+        child: CupertinoPageScaffold(
+          backgroundColor: AppTheme.backgroundColor,
+          navigationBar: CupertinoNavigationBar(
+            border: null,
+            backgroundColor: AppTheme.backgroundColor.withOpacity(.25),
+            leading: GestureDetector(
+              onTap: () {
+                Routemaster.of(context).pop();
+              },
+              child: Icon(
+                Icons.arrow_back_rounded,
+                size: 28,
+                color: AppTheme.primary,
+              ),
+            ),
+          ),
+          child: Consumer<PopularNormativeViewModel>(
+            builder: (context, value, child) => Stack(
+              children: [
+                CustomScrollView(
+                  slivers: [
+                    SliverSafeArea(
+                      sliver: Builder(builder: (_) {
+                        final items = viewModel.popular.data ?? [];
+                        return SliverPadding(
+                          padding: const EdgeInsets.all(16),
+                          sliver: SliverList(
+                              delegate:
+                                  SliverChildBuilderDelegate((context, index) {
+                            final item = items[index];
+                            return NormativeItem(normative: item);
+                          }, childCount: items.length)),
+                        );
+                      }),
+                    )
+                  ],
+                ),
+                if (viewModel.popular.state == ResourceState.loading)
+                  Positioned(
+                      top: 0,
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: AppTheme.primary.withOpacity(0.1),
+                        ),
+                        child: Center(
+                          child: SpinKitPulse(
+                            size: 24,
+                            color: AppTheme.accent,
+                          ),
+                        ),
+                      ))
+              ],
+            ),
           ),
         ),
-        middle: const Text(
-          "Normativas populares",
-        ),
-      ),
-      child: FutureBuilder(
-        future: _popularNormatives(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CupertinoActivityIndicator());
-          } else {
-            if (snapshot.hasError) {
-              return Center(
-                child: Text(
-                  snapshot.error.toString(),
-                ),
-              );
-            } else {
-              var normatives = snapshot.data as List<Normative>;
-              return Container(
-                padding: const EdgeInsets.all(18),
-                width: MediaQuery.of(context).size.width,
-                child: ListView.separated(
-                    separatorBuilder: (context, index) => const SizedBox(
-                          height: 8,
-                        ),
-                    itemCount: normatives.length,
-                    itemBuilder: (context, index) {
-                      var normative = normatives[index];
-                      return NormativeItem(normative: normative);
-                    }),
-              );
-            }
-          }
-        },
       ),
     );
   }

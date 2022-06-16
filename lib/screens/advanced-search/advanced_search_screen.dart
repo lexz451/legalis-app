@@ -49,7 +49,7 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
 
   _onSubmit() {
     final values = _form.value;
-    Routemaster.of(context).push('search-results', queryParameters: {
+    Routemaster.of(context).push('/search-results', queryParameters: {
       'year': "${values['year'] ?? ''}",
       'year_gte': "${values['year_gte'] ?? ''}",
       'year_lte': "${values['year_lte'] ?? ''}",

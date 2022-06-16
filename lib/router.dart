@@ -58,30 +58,19 @@ final routeMap = RouteMap(routes: {
   '/dashboard/recent': (route) => const CupertinoPage(child: RecentNormative()),
   '/dashboard/popular': (route) =>
       const CupertinoPage(child: PopularNormativeScreen()),
+  // '/dashboard/popular/normative/:id': (route) => _goToNormative(route),
+  // '/dashboard/popular/normative/:id/viewer/:file': (route) =>
+  //     _goToViewer(route),
+
   '/dashboard/advanced-search': (router) =>
       const CupertinoPage(child: AdvancedSearchScreen()),
 
-  '/dashboard/advanced-search/search-results': (route) =>
+  '/search-results': (route) =>
       CupertinoPage(child: SearchResultsScreen(params: route.queryParameters)),
-  '/dashboard/advanced-search/search-results/normative/:id': (route) =>
-      _goToNormative(route),
-  '/dashboard/advanced-search/search-results/normative/:id/viewer/:file':
-      (route) => _goToViewer(route),
-
-  '/dashboard/directories/normative/:id': (route) => _goToNormative(route),
-  '/dashboard/directories/normative/:id/viewer/:file': (route) =>
-      _goToViewer(route),
-
-  '/dashboard/normative/:id': (route) => _goToNormative(route),
-
-  '/dashboard/search-results': (route) =>
-      CupertinoPage(child: SearchResultsScreen(params: route.queryParameters)),
-
   '/normative/:id': (route) => _goToNormative(route),
   '/gazette/:id': (route) => _goToGazette(route),
   '/viewer/:file': (route) => _goToViewer(route),
 
-  //'/bookmarks/normatives/:id': (route) => _goToNormative(route),
   '/bookmarks': (route) => const MaterialPage(child: Bookmarks()),
   '/downloads': (route) => const MaterialPage(child: DownloadsScreen()),
   '/settings': (route) => const MaterialPage(child: SettingsScreen()),
@@ -89,4 +78,18 @@ final routeMap = RouteMap(routes: {
   '/settings/help': (route) => const CupertinoPage(child: HelpScreen()),
   '/settings/about': (route) => const CupertinoPage(child: AboutScreen()),
   '/settings/contact': (route) => const CupertinoPage(child: HelpScreen())
+
+  // '/dashboard/advanced-search/search-results': (route) =>
+  //     CupertinoPage(child: SearchResultsScreen(params: route.queryParameters)),
+  // '/dashboard/advanced-search/search-results/normative/:id': (route) =>
+  //     _goToNormative(route),
+  // '/dashboard/advanced-search/search-results/normative/:id/viewer/:file':
+  //     (route) => _goToViewer(route),
+
+  // '/dashboard/directories/normative/:id': (route) => _goToNormative(route),
+  // '/dashboard/directories/normative/:id/viewer/:file': (route) =>
+  //     _goToViewer(route),
+  // '/dashboard/normative/:id': (route) => _goToNormative(route),
+  // '/dashboard/search-results': (route) =>
+  //     CupertinoPage(child: SearchResultsScreen(params: route.queryParameters)),
 });
