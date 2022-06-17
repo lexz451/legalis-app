@@ -8,11 +8,7 @@
 
 ### **Acceso fácil a la legislación cubana**
 
-<br>
-
 Aplicación multiplataforma desarrollada por **Datalis** para el proyecto **Legalis** de [**elTOQUE Juridico**]().
-
-<br>
 
 ## Desarrollo
 
