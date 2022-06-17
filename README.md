@@ -16,8 +16,6 @@ Aplicación multiplataforma desarrollada por **Datalis** para el proyecto **Lega
 
 ## Desarrollo
 
----
-
 ### Clonar el repositorio
 
 ```
@@ -53,8 +51,6 @@ flutter build web
 ⚠️ \*\* La version web no soporta todas las funcionalidades.
 
 ## Desarrolladores
-
----
 
 <a href="https://github.com/datalis">
   <img src="https://github.com/datalis.png?size=50">
