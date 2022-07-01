@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:legalis/main.dart';
 import 'package:legalis/screens/dashboard/dashboard_viewmodel.dart';
 import 'package:legalis/theme.dart';
 import 'package:legalis/widget/search_box.dart';
 import 'package:provider/provider.dart';
 import 'package:routemaster/routemaster.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -27,6 +29,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     super.initState();
     viewModel.fetchNews();
+  }
+
+  _launchUrl(item) async {
+    final url = Uri.parse("https://eltoque.com/${item['slug']}");
+    try {
+      await launchUrl(url);
+    } catch (e) {
+      LOGGER.i(e);
+    }
   }
 
   Widget _buildMenuEntry(MapEntry<String, String> entry) {
@@ -197,32 +208,38 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           child: Card(
                             clipBehavior: Clip.antiAlias,
                             margin: const EdgeInsets.only(bottom: 16),
-                            child: Stack(
-                              children: [
-                                Image.network(
-                                  "https://api.eltoque.com${item['feature_image']['url']}",
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      const SizedBox(),
-                                  fit: BoxFit.cover,
-                                  width: MediaQuery.of(context).size.width,
-                                  height: MediaQuery.of(context).size.height,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(16),
-                                  child: Column(
-                                    children: [
-                                      const Expanded(child: SizedBox()),
-                                      Text(
-                                        item['title'],
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
+                            child: GestureDetector(
+                              onTap: () => _launchUrl(item),
+                              child: Stack(
+                                children: [
+                                  FadeInImage(
+                                      fadeInDuration:
+                                          const Duration(milliseconds: 200),
+                                      fit: BoxFit.cover,
+                                      width: MediaQuery.of(context).size.width,
+                                      height:
+                                          MediaQuery.of(context).size.height,
+                                      placeholder: const AssetImage(
+                                          "assets/images/placeholder.webp"),
+                                      image: NetworkImage(
+                                          "https://api.eltoque.com${item['feature_image']['url']}")),
+                                  Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Column(
+                                      children: [
+                                        const Expanded(child: SizedBox()),
+                                        Text(
+                                          item['title'],
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         );

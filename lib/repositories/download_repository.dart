@@ -10,21 +10,21 @@ class DownloadRepository {
   final apiService = getIt<APIService>();
 
   Future remove(File file) async {
-    bool hasPermission = await _requestPermission();
-    if (!hasPermission) {
-      LOGGER.e("Missing storage permission");
-      return false;
-    }
+    // bool hasPermission = await _requestPermission();
+    // if (!hasPermission) {
+    //   LOGGER.e("Missing storage permission");
+    //   return false;
+    // }
     return await file.delete();
   }
 
   Future<bool> isDownloaded(fileName) async {
     if (fileName == null) return false;
-    bool hasPermission = await _requestPermission();
-    if (!hasPermission) {
-      LOGGER.e("Missing storage permission");
-      return false;
-    }
+    // bool hasPermission = await _requestPermission();
+    // if (!hasPermission) {
+    //   LOGGER.e("Missing storage permission");
+    //   return false;
+    // }
     final dir = await getApplicationDocumentsDirectory();
     final files = dir.listSync().whereType<File>().toList();
     if (files.isEmpty) return false;
@@ -32,11 +32,11 @@ class DownloadRepository {
   }
 
   Future<List<File>> getDownloadedFiles() async {
-    bool hasPermission = await _requestPermission();
-    if (!hasPermission) {
-      LOGGER.e("Missing storage permission");
-      return [];
-    }
+    // bool hasPermission = await _requestPermission();
+    // if (!hasPermission) {
+    //   LOGGER.e("Missing storage permission");
+    //   return [];
+    // }
     final dir = await getApplicationDocumentsDirectory();
     final contents =
         dir.listSync().whereType<File>().where((e) => e.path.endsWith(".pdf"));
@@ -45,11 +45,11 @@ class DownloadRepository {
 
   Future<File?> getDownloadedFile(fileName) async {
     if (fileName == null) return null;
-    bool hasPermission = await _requestPermission();
-    if (!hasPermission) {
-      LOGGER.e("Missing storage permission");
-      return null;
-    }
+    // bool hasPermission = await _requestPermission();
+    // if (!hasPermission) {
+    //   LOGGER.e("Missing storage permission");
+    //   return null;
+    // }
     final dir = await getApplicationDocumentsDirectory();
     final files = dir.listSync().whereType<File?>().toList();
     if (files.isEmpty) return null;
@@ -58,11 +58,11 @@ class DownloadRepository {
   }
 
   Future downloadFile(String url, String fileName) async {
-    bool hasPermission = await _requestPermission();
-    if (!hasPermission) {
-      LOGGER.e("Missing storage permission");
-      return;
-    }
+    // bool hasPermission = await _requestPermission();
+    // if (!hasPermission) {
+    //   LOGGER.e("Missing storage permission");
+    //   return;
+    // }
     final dir = await getApplicationDocumentsDirectory();
     try {
       await apiService.download(url, "${dir.path}/$fileName");
