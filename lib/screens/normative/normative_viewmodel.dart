@@ -53,8 +53,10 @@ class NormativeViewModel extends BaseModel {
     setLoading(true);
     try {
       final norm = await normativeRepository.fetchById(id);
-      final gaz = await gazetteRepository.fetchById(norm.gazette);
-      gazette = gaz;
+      if (norm.gazette != null) {
+        final gaz = await gazetteRepository.fetchById(norm.gazette);
+        gazette = gaz;  
+      }
       normative = Resource.complete(norm);
       setLoading(false);
     } catch (e) {

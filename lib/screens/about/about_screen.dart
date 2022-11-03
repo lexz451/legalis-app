@@ -85,58 +85,59 @@ class _AboutScreenState extends State<AboutScreen> {
               children: [
                 CustomScrollView(
                   slivers: [
-                    SliverPadding(
-                      padding: const EdgeInsets.all(16),
-                      sliver: SliverToBoxAdapter(
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 72,
-                            ),
-                            Text(
-                              "Legalis".toUpperCase(),
-                              style: const TextStyle(
-                                  fontSize: 24, fontWeight: FontWeight.bold),
-                            ),
-                            Container(
-                              height: 2,
-                              margin: const EdgeInsets.only(top: 16),
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                      begin: FractionalOffset.centerLeft,
-                                      end: FractionalOffset.centerRight,
-                                      colors: [
-                                    Colors.transparent,
-                                    Colors.blueAccent.withOpacity(.5),
-                                    Colors.transparent
-                                  ],
-                                      stops: const [
-                                    .0,
-                                    .5,
-                                    1
-                                  ])),
-                            ),
-                            const SizedBox(
-                              height: 24,
-                            ),
-                            const Text(
-                              "Lorem ipsum dolor sit amet. Ab laudantium porro ad veniam vero quo porro quae? Est incidunt mollitia in repudiandae ipsa qui consequatur debitis qui doloribus eligendi qui porro necessitatibus. Non velit porro 33 aliquam placeat et obcaecati sequi et explicabo ipsa. ",
-                              style: TextStyle(),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(
-                              height: 32,
-                            ),
-                            if (viewModel.team.data != null)
+                    SliverSafeArea(
+                      sliver: SliverPadding(
+                        padding: const EdgeInsets.all(16),
+                        sliver: SliverToBoxAdapter(
+                          child: Column(
+                            children: [
+                              
                               Text(
-                                "Equipo".toUpperCase(),
+                                "Legalis".toUpperCase(),
                                 style: const TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                    fontSize: 24, fontWeight: FontWeight.bold),
                               ),
-                            const SizedBox(
-                              height: 12,
-                            )
-                          ],
+                              Container(
+                                height: 2,
+                                margin: const EdgeInsets.only(top: 16),
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                        begin: FractionalOffset.centerLeft,
+                                        end: FractionalOffset.centerRight,
+                                        colors: [
+                                      Colors.transparent,
+                                      Colors.blueAccent.withOpacity(.5),
+                                      Colors.transparent
+                                    ],
+                                        stops: const [
+                                      .0,
+                                      .5,
+                                      1
+                                    ])),
+                              ),
+                              const SizedBox(
+                                height: 24,
+                              ),
+                              const Text(
+                                "Lorem ipsum dolor sit amet. Ab laudantium porro ad veniam vero quo porro quae? Est incidunt mollitia in repudiandae ipsa qui consequatur debitis qui doloribus eligendi qui porro necessitatibus. Non velit porro 33 aliquam placeat et obcaecati sequi et explicabo ipsa. ",
+                                style: TextStyle(),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(
+                                height: 32,
+                              ),
+                              if (viewModel.team.data != null)
+                                Text(
+                                  "Equipo".toUpperCase(),
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              const SizedBox(
+                                height: 12,
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),

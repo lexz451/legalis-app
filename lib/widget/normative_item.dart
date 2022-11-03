@@ -37,6 +37,7 @@ class _NormativeItemState extends State<NormativeItem> {
   }
 
   _share() {
+    //TODO "Remove static url, use env"
     Share.share('https://legalis.netlify.app/normativa/${normative.id}');
   }
 

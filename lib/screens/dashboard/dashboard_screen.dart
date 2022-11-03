@@ -123,17 +123,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const SizedBox(
-                          height: 12,
+                          height: 24,
                         ),
                         Image.asset(
                           "assets/images/logo.png",
-                          width: 180,
+                          width: 160,
                           isAntiAlias: true,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 4),
                         const Text(
                           "Acceso fácil a la legislación cubana",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white70),
                         ),
                         const SizedBox(
                           height: 32,

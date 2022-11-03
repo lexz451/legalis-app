@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:legalis/model/normative.dart';
 import 'package:legalis/model/resource.dart';
 import 'package:legalis/screens/popular/popular_normatives_viewmodel.dart';
 import 'package:legalis/theme.dart';
